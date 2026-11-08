@@ -27,7 +27,43 @@ replaced with real glyphs; the canvas is sized at load so the start card
 no longer clips; header and modal buttons are at least 44px tall; the deck
 drawer is hidden on phones; stray prompt text trailing after `</html>` in
 the sent file (it rendered at the bottom of the page) was removed.
-Still missing versus v3.1, flagged to Louie: no touch D-pad or swipe
+## Nov 8, 2026: v4.1 (Primer fix + block puzzles + touch controls)
+
+Primer was broken as sent: `openPrimer()` referenced a `modal-primer` that
+did not exist in the file, so clicking Primer threw a null error and nothing
+opened. The Labs and Deck buttons were dead the same way (`modal-codex` and
+`modal-deck` were missing too; the Codex tab panels sat orphaned in the page
+with no modal around them). All three modals were restored: a What-Is Primer
+guide (Phi, c, Planck, how to play), the Harmonic Codex & Labs modal (the
+existing quantum/geometry/theory tabs wrapped in a modal with tab buttons;
+Labs opens on the Quantum tab), and the Codex Deck modal. A leftover
+`$1, 1, 2, 3, 5, 8, 13...$` LaTeX literal in the theory tab was stripped.
+
+Block puzzles (Louie's prompt: move blocks around a grid to free a certain
+block or prize): the Metatron key is now sealed behind a sliding-block
+puzzle. Stepping onto the key opens the Resonance Block Puzzle modal: free
+the golden block by sliding the other blocks out of its way until it escapes
+through the glowing exit on the right. Tap a block, then an arrow (or use
+the arrow keys); Reset restores the starting layout; closing unsolved leaves
+the key locked and the player can retry. The timer pauses while the puzzle
+is open. Puzzles are built fresh every maze (4x4 on tiers 1-2, 5x5 on
+tiers 3-4) with a deliberate gate blocker and verified by a BFS solver to a
+3-10 move solution; 200 generated per size, 0 unsolvable, 0 trivial, and
+generation takes ~1-7ms per maze. The key is drawn with a lock until solved.
+
+Touch controls: a 64px D-pad below the maze (touch screens only, hidden on
+desktop) with hold-to-repeat, plus swipe on the canvas (24px threshold).
+Keyboard, D-pad, and swipe all route through the same `movePlayer`.
+
+Also fixed while in the Hub: the tier grid only had Tier 1 and Tier 2, and
+the Tier 2 button was unclosed and empty (its label was missing; the
+Quantum Physics card sat inside the grid as a fifth child). All four tiers
+are now selectable, and the Quantum card is its own section below the grid.
+
+Still missing versus v3.1: the Codex deck is in-memory only and does not
+persist across reloads (no `monromi_mazes_deck_v1` equivalent yet). The
+v3.1 push-block sockets and entropy countdown are not in v4 by design; the
+block puzzle above is v4's puzzle mechanic instead.
 (keyboard only), deck does not persist across reloads. QA: full tier-1 win
 replayed to REALM HARMONIZED, badges saved, themes switch, no errors, no
 overflow at 390px, start card fits at 390px and at 1919x998.
