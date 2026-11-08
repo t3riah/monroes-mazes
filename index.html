@@ -2,25 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#05050D">
-    <meta name="description" content="Monromi's Mazes: a maze game that teaches sacred geometry, physics and sound.">
-    <meta property="og:title" content="Monromi's Mazes: Sacred Geometry &amp; Physics">
-    <meta property="og:description" content="Guide Monromi through mazes, collect constants, learn physics.">
-    <link rel="manifest" href="manifest.webmanifest">
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%CE%A6%3C/text%3E%3C/svg%3E">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Monromi's Mazes: Sacred Geometry & Physics</title>
-    
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             touch-action: manipulation;
-            user-select: auto;
-            -webkit-user-select: auto;
+            user-select: none;
+            -webkit-user-select: none;
             background-color: #05050D;
             color: #f3f4f6;
         }
@@ -39,84 +29,96 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(157, 78, 221, 0.3);
         }
-        body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); padding-bottom: env(safe-area-inset-bottom); -webkit-tap-highlight-color: transparent; }
-        .dpad-btn, #game-canvas { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-        .dpad-btn { touch-action: none; }
-        button:focus-visible, input:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
-        @media (pointer: coarse) {
-            header button, #lore-banner button, .btn-codex-tab, .btn-geo-type, #btn-toggle-tuning, [id^="btn-close-"] { min-height: 44px; min-width: 44px; }
-        }
-        @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
         #game-canvas {
             touch-action: none;
         }
-        /* Dynamic Explainable Element Styling */
-        [data-explain]:not(button) {
+        [data-explain] {
             cursor: pointer;
             text-decoration: underline dotted rgba(56, 189, 248, 0.6);
             text-underline-offset: 3px;
             transition: all 0.2s ease;
         }
-        [data-explain]:not(button):hover {
+        [data-explain]:hover {
             color: #38bdf8 !important;
             text-decoration-color: #38bdf8;
         }
+        @keyframes flutterToDeck {
+            0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(100px, 150px) scale(0.6) rotate(15deg); }
+            100% { opacity: 0; transform: translate(220px, 300px) scale(0.2) rotate(35deg); }
+        }
+        .animate-flutter-deal {
+            animation: flutterToDeck 0.85s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes cardShuffleIn {
+            0% { transform: translateY(-40px) rotate(-10deg) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+        }
+        .animate-card-deal {
+            animation: cardShuffleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
     </style>
-    <style>
-*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\!container{max-width:1536px!important}.container{max-width:1536px}}.pointer-events-none{pointer-events:none}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.inset-x-0{left:0;right:0}.right-5{right:1.25rem}.right-6{right:1.5rem}.top-0{top:0}.top-5{top:1.25rem}.top-6{top:1.5rem}.z-20{z-index:20}.z-30{z-index:30}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.my-auto{margin-top:auto;margin-bottom:auto}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-12{height:3rem}.h-14{height:3.5rem}.h-3{height:.75rem}.h-3\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-8{height:2rem}.h-9{height:2.25rem}.h-full{height:100%}.max-h-\[90dvh\]{max-height:90dvh}.max-h-\[92dvh\]{max-height:92dvh}.min-h-\[100dvh\]{min-height:100dvh}.w-12{width:3rem}.w-14{width:3.5rem}.w-3\.5{width:.875rem}.w-4{width:1rem}.w-48{width:12rem}.w-5{width:1.25rem}.w-8{width:2rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-4xl{max-width:56rem}.max-w-7xl{max-width:80rem}.max-w-full{max-width:100%}.max-w-md{max-width:28rem}.max-w-xs{max-width:20rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.scale-100{--tw-scale-x:1;--tw-scale-y:1}.scale-100,.scale-95{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.scale-95{--tw-scale-x:.95;--tw-scale-y:.95}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.resize{resize:both}.list-inside{list-style-position:inside}.list-disc{list-style-type:disc}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.flex-row{flex-direction:row}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-stretch{align-items:stretch}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.space-y-6>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem*var(--tw-space-y-reverse))}.self-start{align-self:flex-start}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.overflow-x-hidden{overflow-x:hidden}.overscroll-contain{overscroll-behavior:contain}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-amber-400{--tw-border-opacity:1;border-color:rgb(251 191 36/var(--tw-border-opacity,1))}.border-amber-400\/40{border-color:rgba(251,191,36,.4)}.border-amber-400\/50{border-color:rgba(251,191,36,.5)}.border-amber-400\/60{border-color:rgba(251,191,36,.6)}.border-amber-500\/30{border-color:rgba(245,158,11,.3)}.border-amber-500\/40{border-color:rgba(245,158,11,.4)}.border-amber-500\/50{border-color:rgba(245,158,11,.5)}.border-cyan-400{--tw-border-opacity:1;border-color:rgb(34 211 238/var(--tw-border-opacity,1))}.border-cyan-400\/40{border-color:rgba(34,211,238,.4)}.border-cyan-400\/50{border-color:rgba(34,211,238,.5)}.border-cyan-400\/60{border-color:rgba(34,211,238,.6)}.border-cyan-500\/20{border-color:rgba(6,182,212,.2)}.border-cyan-500\/30{border-color:rgba(6,182,212,.3)}.border-cyan-500\/40{border-color:rgba(6,182,212,.4)}.border-emerald-400{--tw-border-opacity:1;border-color:rgb(52 211 153/var(--tw-border-opacity,1))}.border-emerald-400\/40{border-color:rgba(52,211,153,.4)}.border-emerald-400\/50{border-color:rgba(52,211,153,.5)}.border-emerald-500\/30{border-color:rgba(16,185,129,.3)}.border-emerald-500\/40{border-color:rgba(16,185,129,.4)}.border-pink-400{--tw-border-opacity:1;border-color:rgb(244 114 182/var(--tw-border-opacity,1))}.border-pink-400\/40{border-color:rgba(244,114,182,.4)}.border-purple-400\/40{border-color:rgba(192,132,252,.4)}.border-purple-400\/50{border-color:rgba(192,132,252,.5)}.border-purple-500\/30{border-color:rgba(168,85,247,.3)}.border-rose-400\/40{border-color:rgba(251,113,133,.4)}.border-slate-700\/80{border-color:rgba(51,65,85,.8)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59/var(--tw-border-opacity,1))}.border-slate-900{--tw-border-opacity:1;border-color:rgb(15 23 42/var(--tw-border-opacity,1))}.border-teal-400\/40{border-color:rgba(45,212,191,.4)}.bg-amber-500\/10{background-color:rgba(245,158,11,.1)}.bg-amber-500\/20{background-color:rgba(245,158,11,.2)}.bg-amber-900\/60{background-color:rgba(120,53,15,.6)}.bg-cyan-500\/20{background-color:rgba(6,182,212,.2)}.bg-cyan-950{--tw-bg-opacity:1;background-color:rgb(8 51 68/var(--tw-bg-opacity,1))}.bg-emerald-500\/20{background-color:rgba(16,185,129,.2)}.bg-emerald-900\/80{background-color:rgba(6,78,59,.8)}.bg-pink-500\/20{background-color:rgba(236,72,153,.2)}.bg-purple-500\/20{background-color:rgba(168,85,247,.2)}.bg-purple-900\/60{background-color:rgba(88,28,135,.6)}.bg-purple-900\/80{background-color:rgba(88,28,135,.8)}.bg-rose-500\/20{background-color:rgba(244,63,94,.2)}.bg-slate-700{--tw-bg-opacity:1;background-color:rgb(51 65 85/var(--tw-bg-opacity,1))}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59/var(--tw-bg-opacity,1))}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42/var(--tw-bg-opacity,1))}.bg-slate-900\/40{background-color:rgba(15,23,42,.4)}.bg-slate-900\/60{background-color:rgba(15,23,42,.6)}.bg-slate-900\/80{background-color:rgba(15,23,42,.8)}.bg-slate-900\/90{background-color:rgba(15,23,42,.9)}.bg-slate-950{--tw-bg-opacity:1;background-color:rgb(2 6 23/var(--tw-bg-opacity,1))}.bg-slate-950\/90{background-color:rgba(2,6,23,.9)}.bg-slate-950\/95{background-color:rgba(2,6,23,.95)}.bg-teal-500\/20{background-color:rgba(20,184,166,.2)}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.bg-gradient-to-tr{background-image:linear-gradient(to top right,var(--tw-gradient-stops))}.from-amber-300{--tw-gradient-from:#fcd34d var(--tw-gradient-from-position);--tw-gradient-to:rgba(252,211,77,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-amber-400{--tw-gradient-from:#fbbf24 var(--tw-gradient-from-position);--tw-gradient-to:rgba(251,191,36,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-amber-500{--tw-gradient-from:#f59e0b var(--tw-gradient-from-position);--tw-gradient-to:rgba(245,158,11,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-cyan-300{--tw-gradient-from:#67e8f9 var(--tw-gradient-from-position);--tw-gradient-to:rgba(103,232,249,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-emerald-300{--tw-gradient-from:#6ee7b7 var(--tw-gradient-from-position);--tw-gradient-to:rgba(110,231,183,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-emerald-400{--tw-gradient-from:#34d399 var(--tw-gradient-from-position);--tw-gradient-to:rgba(52,211,153,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-emerald-500{--tw-gradient-from:#10b981 var(--tw-gradient-from-position);--tw-gradient-to:rgba(16,185,129,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-purple-900{--tw-gradient-from:#581c87 var(--tw-gradient-from-position);--tw-gradient-to:rgba(88,28,135,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.via-emerald-300{--tw-gradient-to:rgba(110,231,183,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#6ee7b7 var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-pink-400{--tw-gradient-to:rgba(244,114,182,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#f472b6 var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-pink-500{--tw-gradient-to:rgba(236,72,153,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#ec4899 var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-pink-900{--tw-gradient-to:rgba(131,24,67,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#831843 var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-teal-300{--tw-gradient-to:rgba(94,234,212,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#5eead4 var(--tw-gradient-via-position),var(--tw-gradient-to)}.to-amber-300{--tw-gradient-to:#fcd34d var(--tw-gradient-to-position)}.to-amber-900{--tw-gradient-to:#78350f var(--tw-gradient-to-position)}.to-purple-400{--tw-gradient-to:#c084fc var(--tw-gradient-to-position)}.to-purple-600{--tw-gradient-to:#9333ea var(--tw-gradient-to-position)}.to-teal-500{--tw-gradient-to:#14b8a6 var(--tw-gradient-to-position)}.to-teal-600{--tw-gradient-to:#0d9488 var(--tw-gradient-to-position)}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-3\.5{padding:.875rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-3\.5{padding-left:.875rem;padding-right:.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-3{padding-top:.75rem}.pb-3,.py-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pr-10{padding-right:2.5rem}.pt-2{padding-top:.5rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[11px\]{font-size:11px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.tracking-wide{letter-spacing:.025em}.tracking-wider{letter-spacing:.05em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138/var(--tw-text-opacity,1))}.text-amber-200\/70{color:hsla(48,97%,77%,.7)}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77/var(--tw-text-opacity,1))}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36/var(--tw-text-opacity,1))}.text-amber-400\/70{color:rgba(251,191,36,.7)}.text-cyan-200{--tw-text-opacity:1;color:rgb(165 243 252/var(--tw-text-opacity,1))}.text-cyan-200\/70{color:rgba(165,243,252,.7)}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249/var(--tw-text-opacity,1))}.text-cyan-400{--tw-text-opacity:1;color:rgb(34 211 238/var(--tw-text-opacity,1))}.text-cyan-400\/70{color:rgba(34,211,238,.7)}.text-emerald-200{--tw-text-opacity:1;color:rgb(167 243 208/var(--tw-text-opacity,1))}.text-emerald-200\/80{color:rgba(167,243,208,.8)}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183/var(--tw-text-opacity,1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153/var(--tw-text-opacity,1))}.text-pink-200{--tw-text-opacity:1;color:rgb(251 207 232/var(--tw-text-opacity,1))}.text-pink-400{--tw-text-opacity:1;color:rgb(244 114 182/var(--tw-text-opacity,1))}.text-purple-200{--tw-text-opacity:1;color:rgb(233 213 255/var(--tw-text-opacity,1))}.text-purple-300{--tw-text-opacity:1;color:rgb(216 180 254/var(--tw-text-opacity,1))}.text-purple-400{--tw-text-opacity:1;color:rgb(192 132 252/var(--tw-text-opacity,1))}.text-purple-400\/70{color:rgba(192,132,252,.7)}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113/var(--tw-text-opacity,1))}.text-rose-200{--tw-text-opacity:1;color:rgb(254 205 211/var(--tw-text-opacity,1))}.text-rose-300{--tw-text-opacity:1;color:rgb(253 164 175/var(--tw-text-opacity,1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240/var(--tw-text-opacity,1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225/var(--tw-text-opacity,1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184/var(--tw-text-opacity,1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139/var(--tw-text-opacity,1))}.text-slate-950{--tw-text-opacity:1;color:rgb(2 6 23/var(--tw-text-opacity,1))}.text-teal-200{--tw-text-opacity:1;color:rgb(153 246 228/var(--tw-text-opacity,1))}.text-teal-300{--tw-text-opacity:1;color:rgb(94 234 212/var(--tw-text-opacity,1))}.text-transparent{color:transparent}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.underline{text-decoration-line:underline}.accent-cyan-400{accent-color:#22d3ee}.opacity-0{opacity:0}.opacity-60{opacity:.6}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgba(0,0,0,.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-2xl,.shadow-lg{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.shadow-md{--tw-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color),0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-purple-500\/20{--tw-shadow-color:rgba(168,85,247,.2);--tw-shadow:var(--tw-shadow-colored)}.outline{outline-style:solid}.blur{--tw-blur:blur(8px)}.blur,.drop-shadow-md{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.drop-shadow-md{--tw-drop-shadow:drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06))}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-2xl{--tw-backdrop-blur:blur(40px)}.backdrop-blur-2xl,.backdrop-blur-md{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px)}.backdrop-blur-xl,.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-200{transition-duration:.2s}.duration-300{transition-duration:.3s}.duration-500{transition-duration:.5s}.selection\:bg-amber-500 ::-moz-selection{--tw-bg-opacity:1;background-color:rgb(245 158 11/var(--tw-bg-opacity,1))}.selection\:bg-amber-500 ::selection{--tw-bg-opacity:1;background-color:rgb(245 158 11/var(--tw-bg-opacity,1))}.selection\:text-black ::-moz-selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.selection\:text-black ::selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.selection\:bg-amber-500::-moz-selection{--tw-bg-opacity:1;background-color:rgb(245 158 11/var(--tw-bg-opacity,1))}.selection\:bg-amber-500::selection{--tw-bg-opacity:1;background-color:rgb(245 158 11/var(--tw-bg-opacity,1))}.selection\:text-black::-moz-selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.selection\:text-black::selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.hover\:border-amber-500\/40:hover{border-color:rgba(245,158,11,.4)}.hover\:border-emerald-500\/40:hover{border-color:rgba(16,185,129,.4)}.hover\:border-pink-500\/40:hover{border-color:rgba(236,72,153,.4)}.hover\:bg-amber-800:hover{--tw-bg-opacity:1;background-color:rgb(146 64 14/var(--tw-bg-opacity,1))}.hover\:bg-cyan-900:hover{--tw-bg-opacity:1;background-color:rgb(22 78 99/var(--tw-bg-opacity,1))}.hover\:bg-emerald-800:hover{--tw-bg-opacity:1;background-color:rgb(6 95 70/var(--tw-bg-opacity,1))}.hover\:bg-purple-800:hover{--tw-bg-opacity:1;background-color:rgb(107 33 168/var(--tw-bg-opacity,1))}.hover\:bg-slate-800:hover{--tw-bg-opacity:1;background-color:rgb(30 41 59/var(--tw-bg-opacity,1))}.hover\:from-amber-400:hover{--tw-gradient-from:#fbbf24 var(--tw-gradient-from-position);--tw-gradient-to:rgba(251,191,36,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.hover\:from-emerald-400:hover{--tw-gradient-from:#34d399 var(--tw-gradient-from-position);--tw-gradient-to:rgba(52,211,153,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.hover\:from-purple-800:hover{--tw-gradient-from:#6b21a8 var(--tw-gradient-from-position);--tw-gradient-to:rgba(107,33,168,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.hover\:to-amber-800:hover{--tw-gradient-to:#92400e var(--tw-gradient-to-position)}.hover\:to-purple-500:hover{--tw-gradient-to:#a855f7 var(--tw-gradient-to-position)}.hover\:to-teal-500:hover{--tw-gradient-to:#14b8a6 var(--tw-gradient-to-position)}.hover\:text-amber-100:hover{--tw-text-opacity:1;color:rgb(254 243 199/var(--tw-text-opacity,1))}.hover\:text-cyan-100:hover{--tw-text-opacity:1;color:rgb(207 250 254/var(--tw-text-opacity,1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.hover\:opacity-95:hover{opacity:.95}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.active\:bg-amber-500:active{--tw-bg-opacity:1;background-color:rgb(245 158 11/var(--tw-bg-opacity,1))}@media (min-width:640px){.sm\:block{display:block}.sm\:h-20{height:5rem}.sm\:w-20{width:5rem}.sm\:w-auto{width:auto}.sm\:max-w-sm{max-width:24rem}.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sm\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.sm\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.sm\:flex-row{flex-direction:row}.sm\:items-center{align-items:center}.sm\:gap-2{gap:.5rem}.sm\:gap-3{gap:.75rem}.sm\:self-auto{align-self:auto}.sm\:p-4{padding:1rem}.sm\:p-6{padding:1.5rem}.sm\:text-3xl{font-size:1.875rem;line-height:2.25rem}.sm\:text-sm{font-size:.875rem;line-height:1.25rem}}@media (min-width:768px){.md\:flex{display:flex}.md\:hidden{display:none}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:flex-row{flex-direction:row}.md\:items-center{align-items:center}.md\:p-7{padding:1.75rem}.md\:p-8{padding:2rem}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}}</style>
 </head>
-<body class="min-h-[100dvh] flex flex-col justify-between overflow-x-hidden selection:bg-amber-500 selection:text-black">
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-amber-500 selection:text-black">
 
     <!-- Top Navigation / HUD Bar -->
-    <header id="app-header" class="w-full glass-panel sticky top-0 z-30 px-3 py-2.5 shadow-2xl" style="padding-top:max(.625rem, env(safe-area-inset-top))">
+    <header class="w-full glass-panel sticky top-0 z-30 px-3 py-2.5 shadow-2xl">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
-            <!-- Brand / Logo -->
             <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 flex items-center justify-center shadow-lg font-orbitron font-black text-lg text-slate-950">
                     Φ
                 </div>
                 <div>
-                    <h1 class="hidden sm:block font-orbitron font-black text-base md:text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-emerald-300 to-purple-400">
+                    <h1 class="font-orbitron font-black text-base md:text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-emerald-300 to-purple-400">
                         MONROMI'S MAZES
                     </h1>
-                    <p class="text-xs text-amber-200/70 font-medium hidden sm:block">Interactive Sacred Geometry & Physics Explorer</p>
+                    <p class="text-[11px] text-amber-200/70 font-medium hidden sm:block">Interactive Sacred Geometry & Push-Block Puzzles</p>
                 </div>
             </div>
 
             <!-- Stats Bar -->
             <div class="flex items-center gap-2 sm:gap-3 bg-slate-950/90 px-3 py-1.5 rounded-full border border-amber-500/30 text-xs font-semibold">
-                <!-- Entropy / Timer -->
-                <div class="flex items-center gap-1 text-amber-400" data-explain="Entropy Clock: In physics, entropy measures disorder. In Monromi's mazes, this timer tracks how long Monromi takes to align the realm before chaos increases!">
+                <!-- Entropy / Countdown Timer -->
+                <div class="flex items-center gap-1 text-amber-400" data-explain="Entropy Countdown: Complete the maze and solve block puzzles before time runs out!">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span id="hud-timer" class="font-orbitron">00:00</span>
+                    <span id="hud-timer" class="font-orbitron">60s</span>
                 </div>
                 <div class="h-3.5 w-px bg-slate-800"></div>
-                <!-- Sacred Constants collected -->
-                <div class="flex items-center gap-1 text-emerald-400" data-explain="Sacred Constants: Key mathematical numbers (like Golden Ratio Phi or Speed of Light) that Monromi gathers to build physical laws.">
+                <!-- Sacred Constants -->
+                <div class="flex items-center gap-1 text-emerald-400" data-explain="Sacred Constants: Gather all 3 Phi constants!">
                     <span class="text-sm font-black">Φ</span>
                     <span id="hud-stars" class="font-orbitron">0/3</span>
                 </div>
                 <div class="h-4 w-px bg-slate-800"></div>
+                <!-- Push Blocks Sockets Left -->
+                <div class="flex items-center gap-1 text-cyan-400" data-explain="Energy Sockets: Push glowing resonance blocks into target floor sockets to unlock the Metatron Key!">
+                    <span class="font-bold">🔳</span>
+                    <span id="hud-sockets" class="font-orbitron">0/1</span>
+                </div>
+                <div class="h-4 w-px bg-slate-800"></div>
                 <!-- Portal Key -->
-                <div class="flex items-center gap-1 text-purple-400" data-explain="Metatron Portal Core: The master geometric key needed to open the gateway exit at the end of the maze.">
+                <div class="flex items-center gap-1 text-purple-400">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                    <span id="hud-key" class="font-orbitron">Dormant</span>
+                    <span id="hud-key" class="font-orbitron">Locked</span>
                 </div>
             </div>
 
             <!-- Header Action Controls -->
             <div class="flex items-center gap-1.5 sm:gap-2">
-                <button id="btn-open-primer" class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs shadow-md transition-all flex items-center gap-1" data-explain="What-Is Primer: An introductory visual guide breaking down physics, math, and acoustics into fun, easy concepts for beginners!">
+                <button id="btn-open-deck" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 font-bold text-xs flex items-center gap-1">
+                    <span>🎴 Deck</span>
+                    <span id="deck-count-badge" class="px-1.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black">0</span>
+                </button>
+                <button id="btn-open-primer" class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold text-xs shadow-md flex items-center gap-1">
                     <span>🎓 Primer</span>
                 </button>
-                <button id="btn-audio-toggle" aria-label="Toggle sound" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-100 transition-all border border-amber-500/30" title="Toggle Sound Synthesizer">
+                <button id="btn-audio-toggle" class="p-2 rounded-lg bg-slate-900 text-amber-300 border border-amber-500/30">
                     <svg id="icon-sound-on" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
-                    <svg id="icon-sound-off" class="w-4 h-4 hidden text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
                 </button>
-                <button id="btn-open-codex" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-300 hover:text-cyan-100 border border-cyan-500/30 font-bold text-xs flex items-center gap-1">
+                <button id="btn-open-codex" class="px-2.5 py-1.5 rounded-lg bg-slate-900 text-cyan-300 border border-cyan-500/30 font-bold text-xs">
                     <span>📜 Labs</span>
                 </button>
-                <button id="btn-open-menu" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-purple-600 hover:from-amber-400 hover:to-purple-500 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1">
+                <button id="btn-open-menu" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-purple-600 text-slate-950 font-bold text-xs uppercase tracking-wider shadow-md">
                     <span>Hub</span>
                 </button>
             </div>
@@ -124,19 +126,33 @@
     </header>
 
     <!-- Lore & Interactive Quiz Alert Banner -->
-    <div id="lore-banner" class="fixed inset-x-0 mx-auto w-full max-w-md px-3 z-40 hidden" style="top:72px">
-        <div class="glass-panel p-3 rounded-xl border border-amber-400/60 flex flex-col sm:flex-row items-center justify-between text-xs text-amber-200 gap-3">
+    <div id="lore-banner" class="max-w-4xl mx-auto w-full px-4 mt-2 hidden transition-all z-20">
+        <div id="lore-card-container" class="glass-panel p-3.5 rounded-xl border border-amber-400/60 flex flex-col sm:flex-row items-center justify-between text-xs text-amber-200 gap-3 shadow-2xl">
             <div class="flex items-center gap-2.5">
-                <div id="banner-monromi-avatar" class="w-8 h-8 flex-shrink-0"></div>
+                <div id="banner-monromi-avatar" class="w-9 h-9 flex-shrink-0"></div>
                 <div>
-                    <span id="lore-title" class="font-bold text-amber-300 block">SACRED PRINCIPLE UNLOCKED</span>
-                    <span id="lore-text" class="font-medium">Monromi uncovered the Golden Ratio Phi (1.618)!</span>
+                    <div class="flex items-center gap-2">
+                        <span id="lore-title" class="font-bold text-amber-300 font-orbitron">SACRED PRINCIPLE UNLOCKED</span>
+                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">🎴 Dynamic Card</span>
+                    </div>
+                    <span id="lore-text" class="font-medium text-slate-200 block mt-0.5">Monromi uncovered the Golden Ratio Phi!</span>
                 </div>
             </div>
-            <div id="lore-quiz-actions" class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <button id="btn-quiz-answer-a" class="px-3 py-1.5 bg-purple-900/80 hover:bg-purple-800 border border-purple-400/50 rounded-lg font-mono text-xs text-purple-200 transition-all hidden"></button>
-                <button id="btn-quiz-answer-b" class="px-3 py-1.5 bg-emerald-900/80 hover:bg-emerald-800 border border-emerald-400/50 rounded-lg font-mono text-xs text-emerald-200 transition-all hidden"></button>
-                <button onclick="document.getElementById('lore-banner').classList.add('hidden')" class="text-amber-400 hover:text-white font-bold px-2">✕</button>
+            <button id="btn-collect-card" class="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black rounded-lg text-xs font-orbitron shadow-md">
+                🎴 Deal to Deck
+            </button>
+        </div>
+    </div>
+
+    <!-- Side Deck Quick Drawer -->
+    <div id="side-deck-drawer" class="fixed right-3 top-24 z-30 flex flex-col items-end gap-2 pointer-events-none">
+        <div id="deck-stack-preview" class="pointer-events-auto cursor-pointer p-2 rounded-2xl glass-panel border border-amber-500/40 shadow-2xl flex items-center gap-2 hover:scale-105 transition-all">
+            <div class="relative w-8 h-10 flex items-center justify-center">
+                <div class="absolute inset-0 bg-amber-500 rounded-lg flex items-center justify-center font-bold text-slate-950 text-xs shadow-md">🎴</div>
+            </div>
+            <div class="text-left hidden sm:block pr-1">
+                <div class="text-[10px] font-orbitron font-bold text-amber-300">CODEX DECK</div>
+                <div id="deck-status-text" class="text-[9px] text-slate-400">0 Cards</div>
             </div>
         </div>
     </div>
@@ -145,644 +161,131 @@
     <main class="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 relative">
         <div class="relative flex flex-col items-center justify-center w-full max-w-4xl">
             
-            <!-- Audio Oscilloscope Visualizer Bar -->
-            <div id="tuning-bar" class="w-full mb-2 glass-panel p-2 rounded-xl border border-cyan-500/30 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-2 text-xs font-mono text-cyan-300">
-                    <span data-explain="Tuning Standard: Pitch reference used for musical notes. 432Hz is based on natural harmonic geometry; 440Hz is standard modern music concert pitch.">Tuning Standard:</span>
-                    <button id="btn-toggle-tuning" class="px-2.5 py-1 bg-cyan-950 border border-cyan-400/50 rounded text-amber-300 hover:bg-cyan-900 font-bold text-xs">
-                        432 Hz (Pythagorean)
-                    </button>
-                </div>
-                <div class="hidden sm:block flex-1 max-w-xs h-6 bg-slate-950 rounded border border-cyan-500/20 overflow-hidden relative" data-explain="Oscilloscope: A live sound wave visualizer showing the exact sine wave shapes produced by Monromi's synthesizer.">
-                    <canvas id="oscilloscope-canvas" class="w-full h-full block"></canvas>
-                </div>
-            </div>
-
             <!-- Canvas Container -->
-            <div id="canvas-wrapper" class="relative rounded-2xl overflow-hidden glass-panel p-2 shadow-2xl transition-all duration-500 border border-amber-500/30 max-w-full">
-                <canvas id="game-canvas" class="block rounded-xl bg-slate-950 transition-all"></canvas>
+            <div id="canvas-wrapper" class="relative rounded-2xl overflow-hidden glass-panel p-2 shadow-2xl border border-amber-500/30 max-w-full">
+                <canvas id="game-canvas" class="block rounded-xl bg-slate-950"></canvas>
 
-                <!-- Overlay Modal -->
-                <div id="overlay-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center overflow-y-auto p-4 text-center transition-all z-20">
-                    <div class="max-w-md w-full space-y-3 flex flex-col items-center my-auto">
-                        <div id="hero-monromi-avatar" class="w-14 h-14 sm:w-20 sm:h-20 mb-1"></div>
+                <!-- Overlay / Start / Victory Modal -->
+                <div id="overlay-screen" class="absolute inset-0 bg-slate-950/94 backdrop-blur-md flex flex-col items-center justify-center p-5 text-center transition-all z-20">
+                    <div class="max-w-md w-full space-y-4 flex flex-col items-center">
+                        <div id="hero-monromi-avatar" class="w-20 h-20 mb-1"></div>
                         <div id="overlay-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-orbitron">
-                            MONROMI'S DREAMSCAPE REALM
+                            PUSH-BLOCK PUZZLE MAZES
                         </div>
-                        <h2 id="overlay-title" class="text-2xl sm:text-3xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-pink-400 to-purple-400 tracking-wide">
+                        <h2 id="overlay-title" class="text-2xl sm:text-3xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-pink-400 to-purple-400">
                             MONROMI'S MAZES
                         </h2>
                         <p id="overlay-desc" class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                            Guide Monromi through Sacred Geometry realms! Gather fundamental physics constants (<span data-explain="Golden Ratio Phi (1.618): Found in sunflower spirals and galaxies!">Φ</span>, <span data-explain="Speed of Light: 299,792,458 meters per second!">c</span>, <span data-explain="Planck's Constant: The quantum fundamental unit of physical scale!">ħ</span>) and open the Metatron Gateway to restore cosmic harmony!
+                            Navigate the maze under an entropy countdown timer! Push glowing <b>Resonance Blocks</b> ($\boxdot$) into floor sockets ($\odot$) to unlock the Metatron Portal Key and escape!
                         </p>
-
-                        <div class="w-full flex flex-col sm:flex-row gap-2 pt-2">
-                            <button id="btn-overlay-primer" class="flex-1 py-3 rounded-xl bg-slate-900 border border-emerald-400/50 text-emerald-300 font-bold font-orbitron text-xs hover:bg-slate-800 transition-all">
-                                🎓 START PRIMER ("WHAT IS")
-                            </button>
-                            <button id="btn-overlay-action" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 text-slate-950 font-black font-orbitron text-xs tracking-wider hover:opacity-95 shadow-lg shadow-purple-500/20 transition-all">
-                                BEGIN JOURNEY (432Hz)
-                            </button>
-                        </div>
+                        <button id="btn-overlay-action" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 text-slate-950 font-black font-orbitron text-xs tracking-wider shadow-lg">
+                            BEGIN CHALLENGE (432Hz)
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Controls Banner -->
-            <div id="controls-bar" class="w-full mt-3 flex flex-row items-center justify-between gap-3 max-w-4xl px-2">
-                <div class="hidden md:flex items-center gap-4 text-slate-400 text-xs font-medium glass-panel px-4 py-2 rounded-xl border border-slate-800">
-                    <div class="flex items-center gap-1.5">
-                        <span class="px-2 py-0.5 bg-slate-900 border border-amber-500/30 rounded text-amber-300 font-mono font-bold">W A S D</span>
-                        <span>/</span>
-                        <span class="px-2 py-0.5 bg-slate-900 border border-amber-500/30 rounded text-amber-300 font-mono font-bold">ARROWS</span>
-                        <span>Move Monromi</span>
-                    </div>
-                    <div class="h-3 w-px bg-slate-700"></div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="px-2 py-0.5 bg-slate-900 border border-amber-500/30 rounded text-amber-300 font-mono font-bold">SPACE</span>
-                        <span>Pause</span>
-                    </div>
-                </div>
-
-                <!-- Mobile Touch D-Pad -->
-                <div class="md:hidden flex items-center justify-center">
-                    <div class="grid grid-cols-3 gap-2 w-48">
-                        <div></div>
-                        <button id="btn-touch-up" aria-label="Move up" class="dpad-btn h-14 w-full bg-slate-900/90 active:bg-amber-500 border border-amber-500/40 rounded-xl flex items-center justify-center text-amber-300 text-xl shadow-lg active:scale-95 transition-all">▲</button>
-                        <div></div>
-                        <button id="btn-touch-left" aria-label="Move left" class="dpad-btn h-14 w-full bg-slate-900/90 active:bg-amber-500 border border-amber-500/40 rounded-xl flex items-center justify-center text-amber-300 text-xl shadow-lg active:scale-95 transition-all">◄</button>
-                        <button id="btn-touch-down" aria-label="Move down" class="dpad-btn h-14 w-full bg-slate-900/90 active:bg-amber-500 border border-amber-500/40 rounded-xl flex items-center justify-center text-amber-300 text-xl shadow-lg active:scale-95 transition-all">▼</button>
-                        <button id="btn-touch-right" aria-label="Move right" class="dpad-btn h-14 w-full bg-slate-900/90 active:bg-amber-500 border border-amber-500/40 rounded-xl flex items-center justify-center text-amber-300 text-xl shadow-lg active:scale-95 transition-all">►</button>
-                    </div>
-                </div>
-
-                <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2">
-                    <button id="btn-quick-restart" class="justify-center px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-amber-300 text-xs font-semibold rounded-xl border border-amber-500/30 flex items-center gap-1.5 transition-all" data-explain="Re-Align Realm: Regenerate the current maze with the exact same settings.">
-                        <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        Re-Align Realm
-                    </button>
-                    <button id="btn-random-realm" class="justify-center px-3.5 py-2 bg-gradient-to-r from-purple-900 via-pink-900 to-amber-900 hover:from-purple-800 hover:to-amber-800 text-pink-200 text-xs font-bold rounded-xl border border-pink-400/40 flex items-center gap-1.5 shadow-md transition-all active:scale-95" data-explain="Random Realm: Instantly randomize Tier size, Physics mode, and Harmonic audio theme for a brand new adventure!">
-                        <span class="text-amber-300 text-sm">🎲</span> Random Realm
-                    </button>
-                </div>
-            </div>
         </div>
     </main>
 
-    <footer id="app-footer" class="hidden sm:block w-full text-center py-2.5 text-xs text-slate-500 border-t border-slate-900 glass-panel">
-        <p>Monromi's Mazes &bull; Touch & Desktop Interactive Physics & Sacred Geometry Engine</p>
-    </footer>
-
-    <!-- INTERACTIVE "WHAT IS" PRIMER MODAL -->
-    <div id="modal-primer" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex items-center justify-center p-3 sm:p-6 opacity-0 pointer-events-none transition-all duration-300">
-        <div class="glass-panel-light max-w-3xl w-full rounded-3xl p-5 md:p-7 max-h-[92dvh] overflow-y-auto overscroll-contain border border-emerald-500/40 shadow-2xl relative flex flex-col gap-5">
-            
-            <button id="btn-close-primer" aria-label="Close" class="absolute top-5 right-5 p-2 rounded-full bg-slate-900 hover:bg-slate-800 text-emerald-400 hover:text-white transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-
-            <div class="flex items-center gap-3 border-b border-slate-700/80 pb-3 pr-10">
-                <div id="primer-monromi-avatar" class="w-12 h-12 flex-shrink-0"></div>
-                <div>
-                    <h2 class="text-xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-300 to-amber-300">
-                        MONROMI'S "WHAT IS" PRIMER
-                    </h2>
-                    <p class="text-xs text-emerald-200/80">A beginner's intro guide to the core concepts powering Monromi's Mazes!</p>
+    <!-- Codex & Labs Modal -->
+    <div id="modal-codex" class="fixed inset-0 bg-slate-950/92 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="glass-panel-light max-w-2xl w-full rounded-3xl p-6 max-h-[90vh] overflow-y-auto border border-cyan-500/40 shadow-2xl relative space-y-4">
+            <button id="btn-close-codex" class="absolute top-6 right-6 p-2 rounded-full bg-slate-900 text-cyan-400 hover:text-white">✕</button>
+            <h3 class="text-lg font-bold text-cyan-300 font-orbitron">Sacred Labs & Wave Physics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col items-center bg-slate-950 p-3 rounded-xl border border-cyan-500/30">
+                    <canvas id="oscilloscope-canvas" width="260" height="140" class="rounded"></canvas>
+                    <span class="text-[10px] text-cyan-300 mt-1 font-mono">Live 432Hz Harmonic Sine Wave</span>
                 </div>
-            </div>
-
-            <!-- Primer Topic Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                
-                <!-- Card 1: Sacred Geometry -->
-                <div class="p-4 bg-slate-900/90 rounded-2xl border border-amber-400/40 space-y-2 relative overflow-hidden">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-amber-300 font-orbitron text-sm">🔯 1. Sacred Geometry</span>
-                        <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 font-mono">The Shapes</span>
-                    </div>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        <b class="text-amber-200">What it is:</b> The repeating geometric patterns found throughout nature—from snowflakes and seashell spirals to DNA helices and entire galaxies.
-                    </p>
-                    <p class="text-slate-400 text-xs leading-relaxed">
-                        <b class="text-cyan-300">In Monromi's Mazes:</b> The maze grid walls and background blueprints follow these exact sacred ratios (<span data-explain="Vesica Piscis: Two intersecting equal circles representing initial creation.">Vesica Piscis</span>, <span data-explain="Flower of Life: A 19-circle grid containing all fundamental platonic shapes.">Flower of Life</span>, and <span data-explain="Metatron's Cube: A 13-sphere 3D vector diagram encoding all 5 Platonic Solids.">Metatron's Cube</span>).
-                    </p>
+                <div class="space-y-2 text-xs text-slate-300">
+                    <p><b class="text-cyan-300">Push-Block Puzzles:</b> In physics and robotics, obstacles require calculated displacement. Push resonance blocks into target magnetic sockets to complete circuit paths.</p>
+                    <p><b class="text-amber-300">Entropy Clock:</b> Time represents thermodynamic disorder. Gathering blue time crystals stabilizes the realm.</p>
                 </div>
-
-                <!-- Card 2: Quantum Physics -->
-                <div class="p-4 bg-slate-900/90 rounded-2xl border border-purple-400/40 space-y-2 relative overflow-hidden">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-purple-300 font-orbitron text-sm">⚛️ 2. Quantum Physics</span>
-                        <span class="text-xs px-2 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">Micro Universe</span>
-                    </div>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        <b class="text-purple-200">What it is:</b> The physics of the extremely small (atoms and photons). Here, light acts as both a continuous wave and a particle!
-                    </p>
-                    <p class="text-slate-400 text-xs leading-relaxed">
-                        <b class="text-cyan-300">In Monromi's Mazes:</b> Test this in Monromi's Double-Slit Lab to see how observing light changes waves into particles!
-                    </p>
-                </div>
-
-                <!-- Card 3: 432Hz & Harmonic Tuning -->
-                <div class="p-4 bg-slate-900/90 rounded-2xl border border-cyan-400/40 space-y-2 relative overflow-hidden">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-cyan-300 font-orbitron text-sm">🎵 3. Harmonic 432Hz Pitch</span>
-                        <span class="text-xs px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-200 font-mono">Sound Tuning</span>
-                    </div>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        <b class="text-cyan-200">What it is:</b> A musical tuning scale where note A equals 432 Hertz (vibrations per second), mathematical ratios aligned with mathematical constants.
-                    </p>
-                    <p class="text-slate-400 text-xs leading-relaxed">
-                        <b class="text-cyan-300">In Monromi's Mazes:</b> Monromi synthesizes pure audio tones live! Toggle between 432Hz and standard 440Hz right in the top visualizer.
-                    </p>
-                </div>
-
-                <!-- Card 4: Mathematical Constants -->
-                <div class="p-4 bg-slate-900/90 rounded-2xl border border-emerald-400/40 space-y-2 relative overflow-hidden">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-emerald-300 font-orbitron text-sm">📐 4. Sacred Constants</span>
-                        <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-mono">Cosmic Code</span>
-                    </div>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        <b class="text-emerald-200">What it is:</b> Universal fixed numbers like Golden Ratio <b class="text-amber-300">Phi (Φ = 1.618)</b>, Light Speed <b class="text-amber-300">c</b>, and Planck Constant <b class="text-amber-300">ħ</b>.
-                    </p>
-                    <p class="text-slate-400 text-xs leading-relaxed">
-                        <b class="text-cyan-300">In Monromi's Mazes:</b> Monromi collects these glowing symbols throughout the mazes to unlock the Metatron Exit Core.
-                    </p>
-                </div>
-
-                <!-- Card 5: Cymatics Wave Motion -->
-                <div class="p-4 bg-slate-900/90 rounded-2xl border border-teal-400/40 space-y-2 relative overflow-hidden">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-teal-300 font-orbitron text-sm">🌊 5. Cymatics (Visible Sound)</span>
-                        <span class="text-xs px-2 py-0.5 rounded bg-teal-500/20 text-teal-200 font-mono">Vibrational Shapes</span>
-                    </div>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        <b class="text-teal-200">What it is:</b> Watching sound become visible! When sand or water is placed on a vibrating plate, sound frequencies push particles into beautiful geometric shapes.
-                    </p>
-                    <p class="text-slate-400 text-xs leading-relaxed">
-                        <b class="text-cyan-300">In Monromi's Mazes:</b> Adjust the Cymatics frequency slider inside Monromi's Lab to watch dust particles form geometric nodes live.
-                    </p>
-                </div>
-
-                <!-- Card 6: Entropy & Field Collapse -->
-                <div class="p-4 bg-slate-900/90 rounded-2xl border border-rose-400/40 space-y-2 relative overflow-hidden">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-rose-300 font-orbitron text-sm">🌌 6. Entropy & Quantum Phase</span>
-                        <span class="text-xs px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 font-mono">Energy Flow</span>
-                    </div>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        <b class="text-rose-200">What it is:</b> Entropy describes the natural tendency of energy to spread out and become less organized over time unless guided.
-                    </p>
-                    <p class="text-slate-400 text-xs leading-relaxed">
-                        <b class="text-cyan-300">In Monromi's Mazes:</b> Monromi must navigate through red Entropy Anomalies and race the clock before energy dissolves!
-                    </p>
-                </div>
-
-            </div>
-
-            <div class="pt-2 flex items-center justify-end">
-                <button id="btn-primer-start-playing" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-black text-xs font-orbitron tracking-wider shadow-lg transition-all">
-                    READY TO EXPLORE WITH MONROMI!
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- DYNAMIC TOOLTIP EXPLANATION POPUP -->
-    <div id="tooltip-popup" class="fixed z-50 max-w-xs sm:max-w-sm glass-panel-light p-3.5 rounded-2xl border border-cyan-400/60 shadow-2xl text-xs text-slate-200 opacity-0 pointer-events-none transition-all duration-200 transform scale-95">
-        <div class="flex items-start gap-2.5">
-            <div id="tooltip-monromi-avatar" class="w-9 h-9 flex-shrink-0"></div>
-            <div class="space-y-1">
-                <div class="font-bold font-orbitron text-cyan-300 text-xs flex items-center justify-between">
-                    <span>MONROMI EXPLAINS:</span>
-                    <button onclick="document.getElementById('tooltip-popup').classList.add('opacity-0', 'pointer-events-none')" class="text-slate-400 hover:text-white ml-2">✕</button>
-                </div>
-                <div id="tooltip-body" class="text-xs text-slate-200 leading-relaxed font-medium"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- INTERACTIVE CODEX & PHYSICS LABS MODAL -->
-    <div id="modal-codex" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex items-center justify-center p-3 sm:p-6 opacity-0 pointer-events-none transition-all duration-300">
-        <div class="glass-panel-light max-w-4xl w-full rounded-3xl p-5 md:p-8 max-h-[92dvh] overflow-y-auto overscroll-contain border border-cyan-500/40 shadow-2xl relative flex flex-col gap-6">
-            
-            <button id="btn-close-codex" aria-label="Close" class="absolute top-5 right-5 p-2 rounded-full bg-slate-900 hover:bg-slate-800 text-cyan-400 hover:text-white transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-
-            <div class="border-b border-slate-700/80 pb-3 pr-10">
-                <h2 class="text-2xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-emerald-300 to-purple-400">
-                    MONROMI'S HARMONIC CODEX & LABS
-                </h2>
-                <p class="text-xs text-cyan-200/70 mt-1">Interactive Teaching Tool for Sacred Geometry, Wave Physics, Acoustics, and Quantum Mechanics.</p>
-            </div>
-
-            <!-- Codex Navigation Tabs -->
-            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
-                <button data-tab="tab-cymatics" class="btn-codex-tab px-4 py-2 rounded-xl text-xs font-bold font-orbitron bg-cyan-500/20 border border-cyan-400 text-white">
-                    1. Cymatics Wave Lab
-                </button>
-                <button data-tab="tab-quantum" class="btn-codex-tab px-4 py-2 rounded-xl text-xs font-bold font-orbitron bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white">
-                    2. Double-Slit Quantum
-                </button>
-                <button data-tab="tab-geometry" class="btn-codex-tab px-4 py-2 rounded-xl text-xs font-bold font-orbitron bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white">
-                    3. Sacred Geometry Matrix
-                </button>
-                <button data-tab="tab-theory" class="btn-codex-tab px-4 py-2 rounded-xl text-xs font-bold font-orbitron bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white">
-                    4. Physics & Sound Theory
-                </button>
-            </div>
-
-            <!-- TAB 1: CYMATICS WAVE LAB -->
-            <div id="tab-cymatics" class="codex-tab-content space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-bold text-cyan-300 font-orbitron">Chladni Acoustic Plate Simulator</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Cymatics is the study of visible sound waves. When Monromi vibrates a physical plate at specific resonant modal frequencies, particles migrate away from nodal lines of motion, forming self-organizing sacred geometric patterns!
-                        </p>
-                        <div class="space-y-2 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                            <div class="flex justify-between text-xs text-amber-300 font-mono">
-                                <span>Resonance Dial (n, m):</span>
-                                <span id="cymatic-freq-val">432 Hz (Mode 3, 5)</span>
-                            </div>
-                            <input id="slider-cymatics-freq" type="range" min="1" max="8" value="3" class="w-full accent-cyan-400">
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center bg-slate-950 p-4 rounded-2xl border border-cyan-500/30">
-                        <canvas id="cymatics-canvas" width="260" height="260" class="rounded-xl block bg-slate-950"></canvas>
-                        <span class="text-xs text-cyan-400/70 mt-2 font-mono">Interactive Standing Wave Dust Nodes</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 2: QUANTUM DOUBLE-SLIT SIMULATOR -->
-            <div id="tab-quantum" class="codex-tab-content hidden space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-bold text-purple-300 font-orbitron">Wave-Particle Duality & Observer Effect</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            In Monromi's quantum universe, light and matter behave as continuous probability waves when unobserved. When an measurement detector measures which slit a photon passes through, the wave function collapses into discrete localized particles!
-                        </p>
-                        <div class="flex items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                            <span class="text-xs font-bold text-purple-300">Observer Detector:</span>
-                            <button id="btn-toggle-observer" class="px-4 py-2 bg-purple-900/60 hover:bg-purple-800 border border-purple-400/50 rounded-lg text-xs font-mono font-bold text-purple-200">
-                                OFF (Continuous Wave Interference)
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center bg-slate-950 p-4 rounded-2xl border border-purple-500/30">
-                        <canvas id="quantum-canvas" width="280" height="220" class="rounded-xl block bg-slate-950"></canvas>
-                        <span id="quantum-mode-label" class="text-xs text-purple-400/70 mt-2 font-mono">Interference Pattern Formed</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 3: SACRED GEOMETRY MATRIX -->
-            <div id="tab-geometry" class="codex-tab-content hidden space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-bold text-amber-300 font-orbitron">The Geometry of Creation</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Sacred geometry explores how math generates natural patterns. From the initial <b>Vesica Piscis</b> intersection of two circles to the <b>Flower of Life</b> grid and the <b>Golden Spiral (Φ = 1.618)</b>, these geometric blueprints govern atomic shells and galaxy arms alike.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <button data-geo="vesica" class="btn-geo-type px-3 py-1.5 bg-amber-500/20 border border-amber-400 rounded-lg text-xs font-bold text-amber-200">Vesica Piscis</button>
-                            <button data-geo="spiral" class="btn-geo-type px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs font-bold text-slate-400">Golden Spiral (Phi)</button>
-                            <button data-geo="flower" class="btn-geo-type px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs font-bold text-slate-400">Flower of Life</button>
-                            <button data-geo="metatron" class="btn-geo-type px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs font-bold text-slate-400">Metatron's Cube</button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center bg-slate-950 p-4 rounded-2xl border border-amber-500/30">
-                        <canvas id="geometry-canvas" width="260" height="260" class="rounded-xl block bg-slate-950"></canvas>
-                        <span id="geo-label" class="text-xs text-amber-400/70 mt-2 font-mono">Vesica Piscis: The Monad Intersection</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 4: THEORY DICTIONARY -->
-            <div id="tab-theory" class="codex-tab-content hidden space-y-3">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div class="p-3 bg-slate-900/80 rounded-xl border border-cyan-500/30 space-y-1">
-                        <div class="font-bold text-cyan-300 font-orbitron">🎵 432Hz vs 440Hz Tuning</div>
-                        <p class="text-slate-300 text-xs leading-relaxed">
-                            432Hz is mathematically aligned with Pythagorean tuning and natural ratios of the Earth and cosmos. Modern concert pitch uses 440Hz, which creates subtle acoustic tension.
-                        </p>
-                    </div>
-                    <div class="p-3 bg-slate-900/80 rounded-xl border border-purple-500/30 space-y-1">
-                        <div class="font-bold text-purple-300 font-orbitron">⚛️ Quantum Superposition</div>
-                        <p class="text-slate-300 text-xs leading-relaxed">
-                            Particles can exist in multiple potential states simultaneously until measured, represented mathematically by Erwin Schrödinger's wave function (Ψ).
-                        </p>
-                    </div>
-                    <div class="p-3 bg-slate-900/80 rounded-xl border border-emerald-500/30 space-y-1">
-                        <div class="font-bold text-emerald-300 font-orbitron">🔮 Solfeggio Frequencies (528Hz)</div>
-                        <p class="text-slate-300 text-xs leading-relaxed">
-                            Known as the "Transformation Frequency," 528Hz is used in acoustic research to study vibrational resonance and structural harmony in biological systems.
-                        </p>
-                    </div>
-                    <div class="p-3 bg-slate-900/80 rounded-xl border border-amber-500/30 space-y-1">
-                        <div class="font-bold text-amber-300 font-orbitron">🌀 Fibonacci & Golden Ratio (Φ)</div>
-                        <p class="text-slate-300 text-xs leading-relaxed">
-                            1, 1, 2, 3, 5, 8, 13… As numbers progress, their ratio converges precisely to 1.618033…, dictating optimal spatial packing in plants and spiral galaxies.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Full Hub Settings & Badges Modal -->
-    <div id="modal-dashboard" class="fixed inset-0 bg-slate-950/90 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-        <div class="glass-panel-light max-w-2xl w-full rounded-3xl p-6 md:p-8 max-h-[90dvh] overflow-y-auto overscroll-contain border border-amber-500/40 shadow-2xl relative space-y-6">
-            
-            <button id="btn-close-modal" aria-label="Close" class="absolute top-6 right-6 p-2 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-400 hover:text-white transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-
-            <div class="border-b border-slate-700/80 pb-4 pr-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                    <h2 class="text-2xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-pink-400 to-purple-400">
-                        MONROMI'S COSMIC HUB
-                    </h2>
-                    <p class="text-xs text-amber-200/70 mt-1">Configure your maze grid size, game rules, and sound tuning.</p>
-                </div>
-                <button id="btn-toggle-hub-guide" class="self-start sm:self-auto px-3 py-1.5 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-400/40 text-purple-200 text-xs font-bold flex items-center gap-1.5 transition-all">
-                    <span>💡 Plain-English Guide</span>
-                </button>
-            </div>
-
-            <!-- Guided Tour Explanation Banner (Collapsible) -->
-            <div id="hub-guide-banner" class="hidden p-3.5 bg-slate-900/90 rounded-2xl border border-cyan-400/50 text-xs space-y-2 text-cyan-200">
-                <div class="font-bold font-orbitron text-cyan-300 flex items-center gap-2">
-                    <span>💡 How to customize your experience:</span>
-                </div>
-                <ul class="list-disc list-inside space-y-1 text-xs text-slate-300 leading-relaxed">
-                    <li><b>Maze Tier (Grid Size):</b> Controls how big and complex the maze is (from small 9x9 up to massive 31x31).</li>
-                    <li><b>Physics Mode (Rules):</b> Standard star collection, time trial against entropy, or stealth dodging red anomalies.</li>
-                    <li><b>Audio & Aesthetics:</b> Sets the color scheme and the live synthesized musical scale (e.g. 432Hz natural harmonics vs ambient drones).</li>
-                </ul>
-            </div>
-
-            <!-- Tier Selection -->
+    <!-- Hub Modal -->
+    <div id="modal-dashboard" class="fixed inset-0 bg-slate-950/92 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="glass-panel-light max-w-xl w-full rounded-3xl p-6 border border-amber-500/40 space-y-4 relative">
+            <button id="btn-close-modal" class="absolute top-5 right-5 p-2 rounded-full bg-slate-900 text-amber-400">✕</button>
+            <h2 class="text-xl font-black font-orbitron text-amber-300">Game Hub & Tiers</h2>
             <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                    <label class="text-xs font-bold uppercase tracking-wider text-amber-400">1. Grid Size & Complexity (Tier)</label>
-                    <span class="text-xs text-slate-400 font-mono">Maze Dimensions</span>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    <button data-tier="1" class="btn-tier-select p-3 rounded-xl border text-left transition-all bg-amber-500/20 border-amber-400 text-white" data-explain="Tier 1 (Monad): Compact 9x9 grid. Great for quick playthroughs and beginners learning controls!">
-                        <div class="text-xs font-bold font-orbitron">TIER 1</div>
-                        <div class="text-xs text-amber-200 mt-0.5">Beginner (9x9)</div>
-                        <div class="text-[11px] text-slate-400">Basic Cell Geometry</div>
-                    </button>
-                    <button data-tier="2" class="btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/40 text-slate-300 text-left transition-all" data-explain="Tier 2 (Tetrad Grid): Medium 15x15 maze grid. Balanced pathing complexity with classic Platonic structure.">
-                        <div class="text-xs font-bold font-orbitron">TIER 2</div>
-                        <div class="text-xs text-slate-400 mt-0.5">Standard (15x15)</div>
-                        <div class="text-[11px] text-slate-400">Platonic Grid Order</div>
-                    </button>
-                    <button data-tier="3" class="btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/40 text-slate-300 text-left transition-all" data-explain="Tier 3 (Flower of Life): Challenging 23x23 labyrinth featuring subtle fog-of-war lighting.">
-                        <div class="text-xs font-bold font-orbitron">TIER 3</div>
-                        <div class="text-xs text-slate-400 mt-0.5">Advanced (23x23)</div>
-                        <div class="text-[11px] text-slate-400">Flower of Life Pattern</div>
-                    </button>
-                    <button data-tier="4" class="btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/40 text-slate-300 text-left transition-all" data-explain="Tier 4 (Metatron Hyperdimensional): Expert 31x31 hyper-labyrinth for seasoned maze navigators.">
-                        <div class="text-xs font-bold font-orbitron">TIER 4</div>
-                        <div class="text-xs text-slate-400 mt-0.5">Expert (31x31)</div>
-                        <div class="text-[11px] text-slate-400">Hyperdimensional Fractal</div>
-                    </button>
+                <label class="text-xs font-bold uppercase text-amber-400">Select Difficulty Tier:</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button data-tier="1" class="btn-tier-select p-3 rounded-xl border bg-amber-500/20 border-amber-400 text-white text-left text-xs font-bold">Tier 1: 9x9 (60s Timer)</button>
+                    <button data-tier="2" class="btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 text-left text-xs font-bold">Tier 2: 13x13 (45s + 1 Block)</button>
+                    <button data-tier="3" class="btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 text-left text-xs font-bold">Tier 3: 17x17 (35s + 2 Blocks)</button>
+                    <button data-tier="4" class="btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 text-left text-xs font-bold">Tier 4: 21x21 (30s + 3 Blocks)</button>
                 </div>
             </div>
-
-            <!-- Mode Selection -->
-            <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                    <label class="text-xs font-bold uppercase tracking-wider text-pink-400">2. Gameplay Rules & Mode</label>
-                    <span class="text-xs text-slate-400 font-mono">Objective Type</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                    <button data-mode="classic" class="btn-mode-select p-3 rounded-xl border bg-pink-500/20 border-pink-400 text-white text-left transition-all" data-explain="Classic Explorer Mode: Collect physical constants (Phi, Speed of Light, Planck) at your own pace without time pressure.">
-                        <div class="text-xs font-bold">Classic Explorer</div>
-                        <div class="text-xs text-pink-200 mt-0.5">Collect Constants (Φ, c, ħ)</div>
-                        <div class="text-[11px] text-slate-400">Relaxed & Educational</div>
-                    </button>
-                    <button data-mode="timeAttack" class="btn-mode-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-pink-500/40 text-slate-300 text-left transition-all" data-explain="Time Trial Mode: Race the clock before entropy increases! Pick up blue time crystals to extend your timer.">
-                        <div class="text-xs font-bold">Time Trial</div>
-                        <div class="text-xs text-slate-400 mt-0.5">Beat the Entropy Timer</div>
-                        <div class="text-[11px] text-slate-400">Fast-Paced Action</div>
-                    </button>
-                    <button data-mode="stealth" class="btn-mode-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-pink-500/40 text-slate-300 text-left transition-all" data-explain="Quantum Phase (Stealth): Avoid red patrolling entropy anomalies that distort Monromi on touch.">
-                        <div class="text-xs font-bold">Quantum Phase</div>
-                        <div class="text-xs text-slate-400 mt-0.5">Evade Red Anomalies</div>
-                        <div class="text-[11px] text-slate-400">Tactical & Stealth</div>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Visual & Harmonic Tuning Selection -->
-            <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                    <label class="text-xs font-bold uppercase tracking-wider text-emerald-400">3. Color Theme & Audio Synth Pitch</label>
-                    <span class="text-xs text-slate-400 font-mono">Visuals & Scales</span>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    <button data-theme="cyberpunk" class="btn-theme-select p-3 rounded-xl border bg-emerald-500/20 border-emerald-400 text-white text-left transition-all" data-explain="Golden Phi (Cyberpunk Neon): Neon glow visuals paired with upbeat 432Hz harmonic pentatonic synth scales.">
-                        <div class="text-xs font-bold">Neon Phi</div>
-                        <div class="text-xs text-emerald-200">Cyberpunk Colors</div>
-                        <div class="text-[11px] text-slate-400">432Hz Pentatonic Synth</div>
-                    </button>
-                    <button data-theme="dungeon" class="btn-theme-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-emerald-500/40 text-slate-300 text-left transition-all" data-explain="Ancient Earth (Dungeon Slate): Earthy slate stone theme with deep 528Hz warm acoustic bass drones.">
-                        <div class="text-xs font-bold">Ancient Earth</div>
-                        <div class="text-xs text-slate-400">Slate Stone Visuals</div>
-                        <div class="text-[11px] text-slate-400">528Hz Acoustic Drones</div>
-                    </button>
-                    <button data-theme="synthwave" class="btn-theme-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-emerald-500/40 text-slate-300 text-left transition-all" data-explain="Lotus Sunset (Synthwave): Vibrant pink-violet gradients paired with bright Lydian arpeggios.">
-                        <div class="text-xs font-bold">Lotus Sunset</div>
-                        <div class="text-xs text-slate-400">Vibrant Sunset Gradient</div>
-                        <div class="text-[11px] text-slate-400">Lydian Arpeggios</div>
-                    </button>
-                    <button data-theme="zen" class="btn-theme-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-emerald-500/40 text-slate-300 text-left transition-all" data-explain="Cosmic Zen (Deep Emerald): Relaxing deep green palette with smooth pure-sine acoustic resonance.">
-                        <div class="text-xs font-bold">Cosmic Zen</div>
-                        <div class="text-xs text-slate-400">Deep Emerald Palette</div>
-                        <div class="text-[11px] text-slate-400">Pure Sine Resonance</div>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Achievements & Badges -->
-            <div class="space-y-3 border-t border-slate-700/80 pt-4">
-                <label class="text-xs font-bold uppercase tracking-wider text-amber-400">Monromi's Earned Badges</label>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="badges-container">
-                    <!-- Dynamic Badges -->
-                </div>
-            </div>
-
-            <div class="pt-2 flex items-center justify-end gap-3">
-                <button id="btn-apply-settings" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-purple-600 text-slate-950 font-black text-sm tracking-wider shadow-lg transition-all">
-                    START CUSTOM MAZE
-                </button>
-            </div>
+            <button id="btn-apply-settings" class="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black text-xs font-orbitron">START CUSTOM MAZE</button>
         </div>
     </div>
 
-    <!-- MAIN GAME LOGIC SCRIPTS -->
+    <!-- Deck Modal -->
+    <div id="modal-deck" class="fixed inset-0 bg-slate-950/92 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="glass-panel-light max-w-xl w-full rounded-3xl p-6 max-h-[85vh] overflow-y-auto border border-amber-400/40 relative space-y-4">
+            <button id="btn-close-deck" class="absolute top-5 right-5 p-2 rounded-full bg-slate-900 text-amber-400">✕</button>
+            <h3 class="font-bold font-orbitron text-amber-300 text-base">Codex Collected Deck</h3>
+            <div id="deck-cards-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <!-- Primer Modal -->
+    <div id="modal-primer" class="fixed inset-0 bg-slate-950/92 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="glass-panel-light max-w-lg w-full rounded-3xl p-6 border border-emerald-400/40 relative space-y-4 text-xs text-slate-200">
+            <button id="btn-close-primer" class="absolute top-5 right-5 p-2 rounded-full bg-slate-900 text-emerald-400">✕</button>
+            <h3 class="font-bold font-orbitron text-emerald-300 text-base">What Is Monromi's Mazes?</h3>
+            <p class="leading-relaxed">Guide Monromi through sacred geometric mazes. Push glowing Resonance Blocks into floor sockets to generate power, collect Phi constants ($\Phi$), and grab Time Crystals ($\hourglass$) before entropy runs out!</p>
+        </div>
+    </div>
+
+    <!-- GAME ENGINE SCRIPT -->
     <script>
-        // --- MONROMI SVG AVATAR RENDERER ---
         class MonromiAvatar {
             static render(expression = 'curious') {
-                // Expressions: curious, thoughtful, excited, focused, triumphant
-                let mouthPath = "M 32 46 Q 40 52 48 46"; // curious smile
-                let eyebrowLeft = "M 25 24 Q 30 20 35 24";
-                let eyebrowRight = "M 45 24 Q 50 20 55 24";
-                let eyeSparkle = '<circle cx="33" cy="30" r="1.5" fill="#FFFFFF"/><circle cx="49" cy="30" r="1.5" fill="#FFFFFF"/>';
-
-                if (expression === 'thoughtful') {
-                    mouthPath = "M 34 46 Q 40 44 46 46";
-                    eyebrowLeft = "M 25 22 Q 30 24 35 22";
-                    eyebrowRight = "M 45 20 Q 50 18 55 22";
-                } else if (expression === 'excited' || expression === 'triumphant') {
-                    mouthPath = "M 32 43 Q 40 54 48 43 Z";
-                    eyebrowLeft = "M 24 20 Q 30 16 36 20";
-                    eyebrowRight = "M 44 20 Q 50 16 56 20";
-                } else if (expression === 'focused') {
-                    eyebrowLeft = "M 25 23 Q 30 25 35 25";
-                    eyebrowRight = "M 45 25 Q 50 25 55 23";
-                }
-
-                return `
-                <svg viewBox="0 0 80 80" class="w-full h-full drop-shadow-md">
-                    <!-- Soft Background Halo -->
-                    <circle cx="40" cy="40" r="38" fill="url(#monromi-glow)"/>
-                    <defs>
-                        <radialGradient id="monromi-glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#FCD34D" stop-opacity="0.4"/>
-                            <stop offset="100%" stop-color="#A855F7" stop-opacity="0"/>
-                        </radialGradient>
-                    </defs>
-
-                    <!-- Golden Hair Background/Backing -->
-                    <path d="M 16 38 C 12 18, 68 18, 64 38 C 66 58, 58 68, 54 70 C 40 72, 26 70, 24 68 Z" fill="#FBBF24"/>
-
-                    <!-- Face Base -->
+                return `<svg viewBox="0 0 80 80" class="w-full h-full drop-shadow-md">
+                    <circle cx="40" cy="40" r="38" fill="#FCD34D" opacity="0.3"/>
                     <ellipse cx="40" cy="38" rx="20" ry="22" fill="#FDE68A"/>
-
-                    <!-- Cute Blonde Bangs & Pigtail Waves -->
                     <path d="M 20 28 Q 30 34 40 28 Q 50 34 60 28 Q 54 16 40 16 Q 26 16 20 28 Z" fill="#F59E0B"/>
-                    <path d="M 16 34 C 10 44, 14 56, 18 60 C 22 54, 20 40, 22 34 Z" fill="#FBBF24"/>
-                    <path d="M 64 34 C 70 44, 66 56, 62 60 C 58 54, 60 40, 58 34 Z" fill="#FBBF24"/>
-
-                    <!-- Cheeks -->
-                    <ellipse cx="27" cy="40" rx="3.5" ry="2" fill="#F87171" opacity="0.5"/>
-                    <ellipse cx="53" cy="40" rx="3.5" ry="2" fill="#F87171" opacity="0.5"/>
-
-                    <!-- Blue-Green Teal Eyes -->
                     <ellipse cx="31" cy="32" rx="4.5" ry="6" fill="#0D9488"/>
                     <ellipse cx="49" cy="32" rx="4.5" ry="6" fill="#0D9488"/>
-                    <circle cx="31" cy="32" r="2.5" fill="#042F2E"/>
-                    <circle cx="49" cy="32" r="2.5" fill="#042F2E"/>
-                    ${eyeSparkle}
-
-                    <!-- Eyebrows -->
-                    <path d="${eyebrowLeft}" stroke="#D97706" stroke-width="2" stroke-linecap="round" fill="none"/>
-                    <path d="${eyebrowRight}" stroke="#D97706" stroke-width="2" stroke-linecap="round" fill="none"/>
-
-                    <!-- Nose -->
-                    <circle cx="40" cy="39" r="1.2" fill="#F59E0B"/>
-
-                    <!-- Mouth -->
-                    <path d="${mouthPath}" stroke="#E11D48" stroke-width="2" stroke-linecap="round" fill="${expression === 'excited' || expression === 'triumphant' ? '#FDA4AF' : 'none'}"/>
+                    <circle cx="31" cy="32" r="2.5" fill="#042F2E"/><circle cx="49" cy="32" r="2.5" fill="#042F2E"/>
+                    <path d="M 32 46 Q 40 52 48 46" stroke="#E11D48" stroke-width="2" stroke-linecap="round" fill="none"/>
                 </svg>`;
             }
-
             static injectAvatars() {
-                const map = {
-                    'banner-monromi-avatar': 'curiosity',
-                    'hero-monromi-avatar': 'curious',
-                    'primer-monromi-avatar': 'excited',
-                    'tooltip-monromi-avatar': 'thoughtful'
-                };
-                Object.keys(map).forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerHTML = MonromiAvatar.render(map[id]);
-                });
+                const el = document.getElementById('hero-monromi-avatar');
+                if (el) el.innerHTML = MonromiAvatar.render('curious');
+                const bannerEl = document.getElementById('banner-monromi-avatar');
+                if (bannerEl) bannerEl.innerHTML = MonromiAvatar.render('excited');
             }
         }
 
-        // --- INTERACTIVE TOOLTIP EXPLANATION ENGINE ---
         class TooltipManager {
             static init() {
-                const tooltipEl = document.getElementById('tooltip-popup');
-                const bodyEl = document.getElementById('tooltip-body');
-                if (!tooltipEl || !bodyEl) return;
-
-                const showTooltip = (target, text, event) => {
-                    bodyEl.innerHTML = text;
-                    tooltipEl.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
-                    tooltipEl.classList.add('scale-100');
-
-                    // Smart position calc for Desktop & Mobile
-                    const rect = target.getBoundingClientRect();
-                    let left = rect.left + rect.width / 2 - 140;
-                    let top = rect.bottom + 10;
-
-                    if (left < 10) left = 10;
-                    if (left + 280 > window.innerWidth) left = window.innerWidth - 290;
-                    if (top + 160 > window.innerHeight) top = rect.top - 150;
-
-                    tooltipEl.style.left = `${left}px`;
-                    tooltipEl.style.top = `${top}px`;
-                };
-
-                const hideTooltip = () => {
-                    tooltipEl.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-                    tooltipEl.classList.remove('scale-100');
-                };
-
-                // Attach to all data-explain attributes
                 document.body.addEventListener('click', (e) => {
                     const target = e.target.closest('[data-explain]');
                     if (target) {
-                        e.stopPropagation();
-                        showTooltip(target, target.getAttribute('data-explain'), e);
-                    } else if (!e.target.closest('#tooltip-popup')) {
-                        hideTooltip();
-                    }
-                });
-
-                document.body.addEventListener('mouseover', (e) => {
-                    const target = e.target.closest('[data-explain]');
-                    if (target && window.innerWidth >= 768) {
-                        showTooltip(target, target.getAttribute('data-explain'), e);
-                    }
-                });
-
-                document.body.addEventListener('mouseout', (e) => {
-                    if (e.target.closest('[data-explain]') && window.innerWidth >= 768) {
-                        hideTooltip();
+                        alert(target.getAttribute('data-explain'));
                     }
                 });
             }
         }
 
-        // --- 0. MAZE GENERATION & THEME CONFIGURATION ---
         class MazeGenerator {
             static generate(size) {
                 if (size % 2 === 0) size++;
                 const grid = Array.from({ length: size }, () => Array(size).fill(1));
-
                 function carve(x, y) {
                     grid[y][x] = 0;
-                    const directions = [
-                        { dx: 0, dy: -2 }, { dx: 2, dy: 0 },
-                        { dx: 0, dy: 2 }, { dx: -2, dy: 0 }
-                    ].sort(() => Math.random() - 0.5);
-
-                    for (const dir of directions) {
-                        const nx = x + dir.dx;
-                        const ny = y + dir.dy;
+                    const dirs = [{dx:0, dy:-2}, {dx:2, dy:0}, {dx:0, dy:2}, {dx:-2, dy:0}].sort(() => Math.random() - 0.5);
+                    for (const d of dirs) {
+                        const nx = x + d.dx, ny = y + d.dy;
                         if (nx > 0 && nx < size - 1 && ny > 0 && ny < size - 1 && grid[ny][nx] === 1) {
-                            grid[y + dir.dy / 2][x + dir.dx / 2] = 0;
+                            grid[y + d.dy/2][x + d.dx/2] = 0;
                             carve(nx, ny);
                         }
                     }
@@ -792,1355 +295,386 @@
             }
         }
 
-        const THEMES = {
-            cyberpunk: { bg: '#05050D', wall: '#1e1b4b', wallBorder: '#6366f1', player: '#fbbf24', star: '#34d399', key: '#c084fc', exit: '#a855f7', fogColor: '#05050D' },
-            dungeon: { bg: '#0f172a', wall: '#334155', wallBorder: '#64748b', player: '#f59e0b', star: '#10b981', key: '#8b5cf6', exit: '#ec4899', fogColor: '#0f172a' },
-            synthwave: { bg: '#180b28', wall: '#4c1d95', wallBorder: '#f43f5e', player: '#38bdf8', star: '#facc15', key: '#a855f7', exit: '#34d399', fogColor: '#180b28' },
-            zen: { bg: '#022c22', wall: '#064e3b', wallBorder: '#10b981', player: '#fef08a', star: '#6ee7b7', key: '#c084fc', exit: '#38bdf8', fogColor: '#022c22' }
-        };
-
-        // --- 1. HARMONIC PHYSICS SYNTHESIZER ---
         class AudioSynthEngine {
-            constructor() {
-                this.ctx = null;
-                this.isEnabled = true;
-                this.bgGain = null;
-                this.isMusicPlaying = false;
-                this.currentTheme = 'cyberpunk';
-                this.timerId = null;
-                this.tuningStandard = 432;
-                this.updateScales();
-            }
-
-            setTuningStandard(hz) {
-                this.tuningStandard = hz;
-                this.updateScales();
-                if (this.isMusicPlaying) this.startMusic(this.currentTheme);
-            }
-
-            updateScales() {
-                const ratio = this.tuningStandard / 432;
-                this.scales = {
-                    cyberpunk: [108.00 * ratio, 162.00 * ratio, 216.00 * ratio, 288.00 * ratio, 324.00 * ratio, 432.00 * ratio, 540.00 * ratio],
-                    dungeon: [132.00 * ratio, 176.00 * ratio, 264.00 * ratio, 352.00 * ratio, 396.00 * ratio, 528.00 * ratio],
-                    synthwave: [144.00 * ratio, 216.00 * ratio, 288.00 * ratio, 360.00 * ratio, 432.00 * ratio, 576.00 * ratio],
-                    zen: [108.00 * ratio, 144.00 * ratio, 216.00 * ratio, 288.00 * ratio, 432.00 * ratio, 864.00 * ratio]
-                };
-            }
-
+            constructor() { this.ctx = null; this.isEnabled = true; }
             init() {
-                try {
-                    if (!this.ctx) {
-                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                        this.ctx = new AudioCtx();
-                    }
-                    if (this.ctx && this.ctx.state === 'suspended') {
-                        this.ctx.resume();
-                    }
-                } catch (e) {
-                    console.warn("AudioContext init error:", e);
+                if (!this.ctx) {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AC();
                 }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
             }
-
             toggleSound() {
                 this.isEnabled = !this.isEnabled;
-                if (!this.isEnabled) this.stopMusic();
-                else if (!this.isMusicPlaying) this.startMusic(this.currentTheme);
                 return this.isEnabled;
             }
-
-            startMusic(theme = 'cyberpunk') {
-                if (!this.isEnabled) return;
-                this.init();
-                this.stopMusic();
-                this.currentTheme = theme;
-                this.isMusicPlaying = true;
-                if (!this.ctx) return;
-
-                const scale = this.scales[theme] || this.scales.cyberpunk;
-                let step = 0;
-
-                try {
-                    this.bgGain = this.ctx.createGain();
-                    this.bgGain.gain.setValueAtTime(0.05, this.ctx.currentTime);
-                    this.bgGain.connect(this.ctx.destination);
-
-                    this.timerId = setInterval(() => {
-                        if (!this.isMusicPlaying || !this.isEnabled || !this.ctx) return;
-                        const osc = this.ctx.createOscillator();
-                        const noteGain = this.ctx.createGain();
-
-                        osc.type = theme === 'zen' ? 'sine' : theme === 'dungeon' ? 'triangle' : 'sine';
-                        osc.frequency.setValueAtTime(scale[step % scale.length], this.ctx.currentTime);
-
-                        const filter = this.ctx.createBiquadFilter();
-                        filter.type = 'lowpass';
-                        filter.frequency.setValueAtTime(theme === 'zen' ? 800 : 500, this.ctx.currentTime);
-
-                        const now = this.ctx.currentTime;
-                        noteGain.gain.setValueAtTime(0.001, now);
-                        noteGain.gain.linearRampToValueAtTime(0.05, now + 0.12);
-                        noteGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-
-                        osc.connect(filter);
-                        filter.connect(noteGain);
-                        noteGain.connect(this.bgGain);
-
-                        osc.start(now);
-                        osc.stop(now + 0.75);
-                        step = (step + Math.floor(Math.random() * 2) + 1) % scale.length;
-                    }, 500);
-                } catch (e) {
-                    console.warn("Music synth failed:", e);
-                }
-            }
-
-            stopMusic() {
-                this.isMusicPlaying = false;
-                if (this.timerId) clearInterval(this.timerId);
-                if (this.bgGain) {
-                    try { this.bgGain.disconnect(); } catch (e) {}
-                }
-            }
-
             playSFX(type) {
                 if (!this.isEnabled) return;
                 this.init();
                 if (!this.ctx) return;
-
                 try {
                     const now = this.ctx.currentTime;
-                    const ratio = this.tuningStandard / 432;
-
-                    if (type === 'move') {
-                        const osc = this.ctx.createOscillator();
-                        const gain = this.ctx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(216 * ratio, now);
-                        osc.frequency.exponentialRampToValueAtTime(108 * ratio, now + 0.05);
-                        gain.gain.setValueAtTime(0.04, now);
-                        gain.gain.linearRampToValueAtTime(0.001, now + 0.05);
-                        osc.connect(gain);
-                        gain.connect(this.ctx.destination);
-                        osc.start(now);
-                        osc.stop(now + 0.05);
-                    } else if (type === 'star' || type === 'timeCrystal' || type === 'curiosity') {
-                        [432.00 * ratio, 698.80 * ratio, 1130.90 * ratio].forEach((freq, idx) => {
-                            const osc = this.ctx.createOscillator();
-                            const gain = this.ctx.createGain();
-                            osc.type = 'sine';
-                            osc.frequency.setValueAtTime(freq, now + idx * 0.06);
-                            gain.gain.setValueAtTime(0.09, now + idx * 0.06);
-                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.3);
-                            osc.connect(gain);
-                            gain.connect(this.ctx.destination);
-                            osc.start(now + idx * 0.06);
-                            osc.stop(now + idx * 0.06 + 0.3);
-                        });
-                    } else if (type === 'key') {
-                        const osc = this.ctx.createOscillator();
-                        const gain = this.ctx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(528 * ratio, now);
-                        osc.frequency.linearRampToValueAtTime(1056 * ratio, now + 0.25);
-                        gain.gain.setValueAtTime(0.12, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-                        osc.connect(gain);
-                        gain.connect(this.ctx.destination);
-                        osc.start(now);
-                        osc.stop(now + 0.3);
-                    } else if (type === 'bump') {
-                        const osc = this.ctx.createOscillator();
-                        const gain = this.ctx.createGain();
-                        osc.type = 'triangle';
-                        osc.frequency.setValueAtTime(108 * ratio, now);
-                        osc.frequency.exponentialRampToValueAtTime(54 * ratio, now + 0.08);
-                        gain.gain.setValueAtTime(0.05, now);
-                        gain.gain.linearRampToValueAtTime(0.001, now + 0.08);
-                        osc.connect(gain);
-                        gain.connect(this.ctx.destination);
-                        osc.start(now);
-                        osc.stop(now + 0.08);
-                    } else if (type === 'win') {
-                        [432 * ratio, 540 * ratio, 648 * ratio, 864 * ratio].forEach((freq, i) => {
-                            const osc = this.ctx.createOscillator();
-                            const gain = this.ctx.createGain();
-                            osc.type = 'sine';
-                            osc.frequency.setValueAtTime(freq, now + i * 0.1);
-                            gain.gain.setValueAtTime(0.14, now + i * 0.1);
-                            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.5);
-                            osc.connect(gain);
-                            gain.connect(this.ctx.destination);
-                            osc.start(now + i * 0.1);
-                            osc.stop(now + i * 0.1 + 0.5);
-                        });
-                    } else if (type === 'gameover') {
-                        [216 * ratio, 180 * ratio, 144 * ratio, 108 * ratio].forEach((freq, i) => {
-                            const osc = this.ctx.createOscillator();
-                            const gain = this.ctx.createGain();
-                            osc.type = 'sawtooth';
-                            osc.frequency.setValueAtTime(freq, now + i * 0.08);
-                            gain.gain.setValueAtTime(0.07, now + i * 0.08);
-                            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.2);
-                            osc.connect(gain);
-                            gain.connect(this.ctx.destination);
-                            osc.start(now + i * 0.08);
-                            osc.stop(now + i * 0.08 + 0.2);
-                        });
-                    }
-                } catch (e) {
-                    console.warn("SFX failed:", e);
-                }
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type === 'win' ? 'sine' : type === 'bump' ? 'triangle' : 'sine';
+                    osc.frequency.setValueAtTime(type === 'win' ? 528 : type === 'star' ? 864 : 216, now);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } catch (e) {}
             }
         }
 
-        // --- 2. PEDAGOGICAL LORE & QUIZ DICTIONARY ---
         const SACRED_LORE = [
-            { 
-                symbol: 'Φ (Golden Ratio)', 
-                lore: 'Golden Ratio (1.618): Found in sunflower seeds, Nautilus shells, and spiral galaxies!',
-                quiz: { q: 'What is the value of Golden Ratio Phi?', a: '1.618', b: '3.141', correct: 'a' }
-            },
-            { 
-                symbol: 'c (Light Speed)', 
-                lore: 'Speed of Light (299,792,458 m/s): Photons travel across vacuum as fundamental wave packets.',
-                quiz: { q: 'What travels at the speed of light?', a: 'Photons', b: 'Electrons', correct: 'a' }
-            },
-            { 
-                symbol: 'ħ (Planck Constant)', 
-                lore: 'Planck Constant: Sets the quantum scale where physical action becomes discrete.',
-                quiz: { q: 'Planck constant governs which realm?', a: 'Quantum Realm', b: 'Classical Orbits', correct: 'a' }
-            },
-            { 
-                symbol: '528Hz Solfeggio', 
-                lore: '528Hz Harmonic Frequency: Known as the frequency of Transformation and Natural Symmetry.',
-                quiz: { q: '528Hz belongs to which harmonic scale?', a: 'Solfeggio Scale', b: 'Equal Temperament', correct: 'a' }
-            }
+            { symbol: 'Φ (Golden Ratio)', lore: 'Golden Ratio (1.618): Found in sunflower seeds, nautilus shells, and spiral galaxies!', quiz: { q: 'Value of Phi?', correct: '1.618' } },
+            { symbol: 'c (Light Speed)', lore: 'Speed of Light (299,792,458 m/s): The ultimate speed limit of information in our universe.', quiz: { q: 'Speed of light unit?', correct: 'm/s' } },
+            { symbol: 'ħ (Planck Constant)', lore: 'Planck Constant: The fundamental quantum scale governing particle action.', quiz: { q: 'Planck constant realm?', correct: 'Quantum' } }
         ];
 
-        // --- 3. CODEX SIMULATOR ENGINES ---
-        class InteractiveLabsEngine {
-            constructor() {
-                this.cymaticsMode = 3;
-                this.observerOn = false;
-                this.currentGeo = 'vesica';
-                this.angle = 0;
-            }
-
-            init() {
-                this.bindLabControls();
-                this.renderLoop();
-            }
-
-            bindLabControls() {
-                const slider = document.getElementById('slider-cymatics-freq');
-                if (slider) {
-                    slider.addEventListener('input', (e) => {
-                        this.cymaticsMode = parseInt(e.target.value);
-                        document.getElementById('cymatic-freq-val').innerText = `${this.cymaticsMode * 144} Hz (Mode ${this.cymaticsMode}, ${this.cymaticsMode + 2})`;
-                    });
-                }
-
-                const btnObs = document.getElementById('btn-toggle-observer');
-                if (btnObs) {
-                    btnObs.addEventListener('click', () => {
-                        this.observerOn = !this.observerOn;
-                        btnObs.innerText = this.observerOn ? 'ON (Particle Collapse)' : 'OFF (Continuous Wave Interference)';
-                        btnObs.className = this.observerOn 
-                            ? 'px-4 py-2 bg-amber-900/60 hover:bg-amber-800 border border-amber-400/50 rounded-lg text-xs font-mono font-bold text-amber-200'
-                            : 'px-4 py-2 bg-purple-900/60 hover:bg-purple-800 border border-purple-400/50 rounded-lg text-xs font-mono font-bold text-purple-200';
-                        document.getElementById('quantum-mode-label').innerText = this.observerOn ? 'Two Solid Bands (Decoherence)' : 'Interference Pattern Formed';
-                    });
-                }
-
-                document.querySelectorAll('.btn-geo-type').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.btn-geo-type').forEach(b => {
-                            b.className = 'btn-geo-type px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs font-bold text-slate-400';
-                        });
-                        const target = e.currentTarget;
-                        target.className = 'btn-geo-type px-3 py-1.5 bg-amber-500/20 border border-amber-400 rounded-lg text-xs font-bold text-amber-200';
-                        this.currentGeo = target.getAttribute('data-geo');
-
-                        const labels = {
-                            vesica: 'Vesica Piscis: The Monad Intersection',
-                            spiral: 'Golden Ratio (Phi) Fibonacci Spiral',
-                            flower: 'Flower of Life: Sacred Genesis Grid',
-                            metatron: 'Metatron\'s Cube: 13 Sphere Vectors'
-                        };
-                        document.getElementById('geo-label').innerText = labels[this.currentGeo] || '';
-                    });
-                });
-            }
-
-            renderLoop() {
-                this.angle += 0.02;
-                if (this.codexOpen) this.drawCymatics();
-                if (this.codexOpen) this.drawQuantum();
-                if (this.codexOpen) this.drawGeometry();
-                this.drawOscilloscope();
-                requestAnimationFrame(() => this.renderLoop());
-            }
-
-            drawCymatics() {
-                const cvs = document.getElementById('cymatics-canvas');
-                if (!cvs) return;
-                const ctx = cvs.getContext('2d');
-                const w = cvs.width;
-                const h = cvs.height;
-                ctx.fillStyle = '#05050D';
-                ctx.fillRect(0, 0, w, h);
-
-                ctx.fillStyle = '#00FA9A';
-                const n = this.cymaticsMode, m = n + 2;
-                for (let i = 0; i < 600; i++) {
-                    const x = (Math.sin(i * 99 + this.angle) * 0.5 + 0.5) * w;
-                    const y = (Math.cos(i * 33 + this.angle) * 0.5 + 0.5) * h;
-                    const val = Math.cos(n * Math.PI * (x / w)) * Math.cos(n * Math.PI * (y / h)) - 
-                                Math.cos(m * Math.PI * (x / w)) * Math.cos(n * Math.PI * (y / h));
-                    if (Math.abs(val) < 0.25) {
-                        ctx.fillRect(x, y, 2, 2);
-                    }
-                }
-            }
-
-            drawQuantum() {
-                const cvs = document.getElementById('quantum-canvas');
-                if (!cvs) return;
-                const ctx = cvs.getContext('2d');
-                const w = cvs.width;
-                const h = cvs.height;
-                ctx.fillStyle = '#05050D';
-                ctx.fillRect(0, 0, w, h);
-
-                ctx.fillStyle = '#4C1D95';
-                ctx.fillRect(80, 20, 6, 60);
-                ctx.fillRect(80, 95, 6, 30);
-                ctx.fillRect(80, 140, 6, 60);
-
-                if (!this.observerOn) {
-                    ctx.strokeStyle = 'rgba(167, 139, 250, 0.4)';
-                    ctx.lineWidth = 1.5;
-                    for (let r = 10; r < 180; r += 14) {
-                        ctx.beginPath();
-                        ctx.arc(83, 85, (r + this.angle * 20) % 180, -Math.PI / 2, Math.PI / 2);
-                        ctx.stroke();
-                        ctx.beginPath();
-                        ctx.arc(83, 130, (r + this.angle * 20) % 180, -Math.PI / 2, Math.PI / 2);
-                        ctx.stroke();
-                    }
-                    for (let y = 0; y < h; y += 4) {
-                        const intensity = Math.pow(Math.cos((y - h / 2) * 0.1), 2);
-                        ctx.fillStyle = `rgba(167, 139, 250, ${intensity})`;
-                        ctx.fillRect(w - 15, y, 10, 3);
-                    }
-                } else {
-                    ctx.fillStyle = '#F59E0B';
-                    for (let i = 0; i < 40; i++) {
-                        const px = 86 + ((i * 10 + this.angle * 50) % (w - 100));
-                        const py1 = 82 + (Math.random() - 0.5) * 12;
-                        const py2 = 132 + (Math.random() - 0.5) * 12;
-                        ctx.fillRect(px, py1, 3, 3);
-                        ctx.fillRect(px, py2, 3, 3);
-                    }
-                    ctx.fillStyle = 'rgba(245, 158, 11, 0.9)';
-                    ctx.fillRect(w - 15, 70, 10, 25);
-                    ctx.fillRect(w - 15, 120, 10, 25);
-                }
-            }
-
-            drawGeometry() {
-                const cvs = document.getElementById('geometry-canvas');
-                if (!cvs) return;
-                const ctx = cvs.getContext('2d');
-                const w = cvs.width;
-                const h = cvs.height;
-                const cx = w / 2;
-                const cy = h / 2;
-                ctx.fillStyle = '#05050D';
-                ctx.fillRect(0, 0, w, h);
-
-                ctx.strokeStyle = '#FFD700';
-                ctx.lineWidth = 1.5;
-
-                if (this.currentGeo === 'vesica') {
-                    const r = 55;
-                    ctx.beginPath();
-                    ctx.arc(cx - r / 2, cy, r, 0, Math.PI * 2);
-                    ctx.stroke();
-                    ctx.beginPath();
-                    ctx.arc(cx + r / 2, cy, r, 0, Math.PI * 2);
-                    ctx.stroke();
-                } else if (this.currentGeo === 'spiral') {
-                    ctx.beginPath();
-                    let a = 0, r = 2;
-                    ctx.moveTo(cx, cy);
-                    for (let i = 0; i < 200; i++) {
-                        a += 0.1;
-                        r *= 1.012;
-                        const x = cx + Math.cos(a + this.angle) * r;
-                        const y = cy + Math.sin(a + this.angle) * r;
-                        ctx.lineTo(x, y);
-                    }
-                    ctx.stroke();
-                } else if (this.currentGeo === 'flower') {
-                    const r = 35;
-                    for (let i = 0; i < 6; i++) {
-                        const ang = (i * Math.PI / 3) + this.angle * 0.2;
-                        ctx.beginPath();
-                        ctx.arc(cx + Math.cos(ang) * r, cy + Math.sin(ang) * r, r, 0, Math.PI * 2);
-                        ctx.stroke();
-                    }
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                    ctx.stroke();
-                } else if (this.currentGeo === 'metatron') {
-                    const pts = [];
-                    const r = 60;
-                    for (let i = 0; i < 6; i++) {
-                        const ang = (i * Math.PI / 3) + this.angle * 0.3;
-                        pts.push({ x: cx + Math.cos(ang) * r, y: cy + Math.sin(ang) * r });
-                    }
-                    pts.push({ x: cx, y: cy });
-
-                    pts.forEach(p1 => {
-                        pts.forEach(p2 => {
-                            ctx.beginPath();
-                            ctx.moveTo(p1.x, p1.y);
-                            ctx.lineTo(p2.x, p2.y);
-                            ctx.stroke();
-                        });
-                    });
-                }
-            }
-
-            drawOscilloscope() {
-                const cvs = document.getElementById('oscilloscope-canvas');
-                if (!cvs) return;
-                const ctx = cvs.getContext('2d');
-                const w = cvs.width;
-                const h = cvs.height;
-                ctx.fillStyle = '#020617';
-                ctx.fillRect(0, 0, w, h);
-
-                ctx.strokeStyle = '#38BDF8';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                for (let x = 0; x < w; x++) {
-                    const y = h / 2 + Math.sin(x * 0.08 + this.angle * 4) * (h * 0.3);
-                    if (x === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-            }
-        }
-
-        // --- 4. GAME CONTROLLER EXTENSION ---
         class MazeGame {
             constructor() {
                 this.canvas = document.getElementById('game-canvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.synth = new AudioSynthEngine();
-                this.labs = new InteractiveLabsEngine();
-
                 this.tier = 1;
-                this.mode = 'classic';
-                this.themeKey = 'cyberpunk';
                 this.gridSize = 9;
-
                 this.maze = [];
-                this.player = { x: 1, y: 1, trail: [] };
+                this.player = { x: 1, y: 1 };
                 this.exit = { x: 1, y: 1 };
-                this.keyItem = { x: 0, y: 0, collected: false };
-                this.stars = [];
-                this.curiosityNodes = [];
-                this.timeCrystals = [];
-                this.patrols = [];
-
+                this.keyItem = { x: 0, y: 0 };
                 this.isKeyCollected = false;
+                this.stars = [];
+                this.blocks = [];
+                this.sockets = [];
+                this.timeCrystals = [];
                 this.collectedStarsCount = 0;
-                this.totalStarsRequired = 3;
-
-                this.timer = 0;
-                this.timeLimit = 0;
+                this.timer = 60;
                 this.timerInterval = null;
                 this.isPlaying = false;
                 this.cellSize = 32;
-                this.particles = [];
-                this.geometryAngle = 0;
+                this.collectedDeck = [];
+                this.activeCardLore = null;
 
-                this.badges = {
-                    speedy: { name: 'Quantum Explorer', desc: 'Traverse level in < 15s', unlocked: false, icon: '⚡' },
-                    cartographer: { name: 'Metatron\'s Architect', desc: 'Master Tier 3 & 4', unlocked: false, icon: '🔯' },
-                    stealth: { name: 'Entropy Phaser', desc: 'Beat Quantum Phase mode', unlocked: false, icon: '🌌' },
-                    keymaster: { name: 'Master of Phi', desc: 'Unlock Sacred Portals', unlocked: false, icon: 'Φ' }
-                };
-
-                this.loadProgress();
                 this.bindEvents();
-                this.updateBadgesUI();
-                this.labs.init();
-
                 MonromiAvatar.injectAvatars();
                 TooltipManager.init();
-                this.setCanvasSize(this.computeCanvasSize());
-            }
-
-            init() {
-                if (this.tier === 1) this.gridSize = 9;
-                else if (this.tier === 2) this.gridSize = 15;
-                else if (this.tier === 3) this.gridSize = 23;
-                else if (this.tier === 4) this.gridSize = 31;
-
-                const containerWidth = this.computeCanvasSize();
-                this.setCanvasSize(containerWidth);
-                
-                this.cellSize = this.size / this.gridSize;
-
-                this.maze = MazeGenerator.generate(this.gridSize);
-
-                this.player = { x: 1, y: 1, trail: [] };
-                this.exit = { x: this.gridSize - 2, y: this.gridSize - 2 };
-                this.maze[this.exit.y][this.exit.x] = 0;
-
-                this.spawnKeyItem();
-                this.spawnStars();
-                this.spawnCuriosityNodes();
-
-                this.isKeyCollected = false;
-                this.collectedStarsCount = 0;
-                this.particles = [];
-
-                this.patrols = [];
-                if (this.mode === 'stealth') this.spawnPatrols();
-
-                this.timeCrystals = [];
-                if (this.mode === 'timeAttack') this.spawnTimeCrystals();
-
-                this.timer = 0;
-                if (this.mode === 'timeAttack') {
-                    this.timeLimit = this.tier === 1 ? 20 : this.tier === 2 ? 35 : 55;
-                }
-
-                this.updateHUD();
-                this.render();
-            }
-
-            spawnKeyItem() {
-                let kx, ky;
-                do {
-                    kx = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                    ky = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                } while (this.maze[ky][kx] !== 0 || (kx === 1 && ky === 1) || (kx === this.exit.x && ky === this.exit.y));
-
-                this.keyItem = { x: kx, y: ky, collected: false };
-            }
-
-            spawnStars() {
-                this.stars = [];
-                for (let i = 0; i < this.totalStarsRequired; i++) {
-                    let sx, sy;
-                    do {
-                        sx = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                        sy = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                    } while (
-                        this.maze[sy][sx] !== 0 ||
-                        (sx === 1 && sy === 1) ||
-                        (sx === this.exit.x && sy === this.exit.y) ||
-                        (sx === this.keyItem.x && sy === this.keyItem.y) ||
-                        this.stars.some(s => s.x === sx && s.y === sy)
-                    );
-                    this.stars.push({ x: sx, y: sy, collected: false, lore: SACRED_LORE[i % SACRED_LORE.length] });
-                }
-            }
-
-            spawnCuriosityNodes() {
-                this.curiosityNodes = [];
-                let cx, cy;
-                do {
-                    cx = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                    cy = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                } while (this.maze[cy][cx] !== 0 || (cx === 1 && cy === 1));
-
-                this.curiosityNodes.push({
-                    x: cx,
-                    y: cy,
-                    collected: false,
-                    lore: SACRED_LORE[Math.floor(Math.random() * SACRED_LORE.length)]
-                });
-            }
-
-            spawnTimeCrystals() {
-                for (let i = 0; i < 3; i++) {
-                    let cx, cy;
-                    do {
-                        cx = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                        cy = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                    } while (this.maze[cy][cx] !== 0 || (cx === 1 && cy === 1));
-                    this.timeCrystals.push({ x: cx, y: cy, collected: false });
-                }
-            }
-
-            spawnPatrols() {
-                const count = this.tier === 1 ? 2 : this.tier === 2 ? 4 : 6;
-                for (let i = 0; i < count; i++) {
-                    let gx, gy;
-                    do {
-                        gx = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                        gy = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
-                    } while (this.maze[gy][gx] !== 0 || (gx === 1 && gy === 1));
-
-                    this.patrols.push({
-                        x: gx, y: gy,
-                        dir: Math.floor(Math.random() * 4),
-                        lastMove: Date.now()
-                    });
-                }
-            }
-
-            start() {
-                this.ended = false;
-                this.paused = false;
-                this.init();
-                this.isPlaying = true;
-                this.synth.startMusic(this.themeKey);
-
-                if (this.timerInterval) clearInterval(this.timerInterval);
-                this.timerInterval = setInterval(() => {
-                    if (!this.isPlaying) return;
-                    this.timer++;
-                    this.updateHUD();
-
-                    if (this.mode === 'timeAttack' && this.timer >= this.timeLimit) {
-                        this.gameOver(false, 'Entropy Dissolved the Path!');
-                    }
-                }, 1000);
-
-                document.getElementById('overlay-screen').classList.add('hidden');
-                this.gameLoop();
-            }
-
-            pause() {
-                if (!this.maze.length || this.ended) return;
-                this.isPlaying = !this.isPlaying;
-                this.paused = !this.isPlaying;
-                const overlay = document.getElementById('overlay-screen');
-                if (!this.isPlaying) {
-                    this.synth.stopMusic();
-                    document.getElementById('overlay-badge').innerText = 'REALM PAUSED';
-                    document.getElementById('overlay-title').innerText = 'MONROMI RESTING';
-                    document.getElementById('overlay-desc').innerText = 'Resume when ready to align the geometry.';
-                    document.getElementById('btn-overlay-action').innerText = 'RESUME JOURNEY';
-                    overlay.classList.remove('hidden');
-                } else {
-                    overlay.classList.add('hidden');
-                    this.synth.startMusic(this.themeKey);
-                    this.gameLoop();
-                }
-            }
-
-            gameOver(isWin, message) {
-                this.ended = true;
-                this.paused = false;
-                this.isPlaying = false;
-                clearInterval(this.timerInterval);
-                const overlay = document.getElementById('overlay-screen');
-
-                if (isWin) {
-                    this.synth.playSFX('win');
-                    this.createConfetti();
-                    document.getElementById('hero-monromi-avatar').innerHTML = MonromiAvatar.render('triumphant');
-                    document.getElementById('overlay-badge').innerText = 'REALM HARMONIZED!';
-                    document.getElementById('overlay-title').innerText = 'PORTAL PASSED';
-                    document.getElementById('overlay-desc').innerText = `${message} Alignment Time: ${this.formatTime(this.timer)}.`;
-                    document.getElementById('btn-overlay-action').innerText = 'NEXT REALM';
-
-                    if (this.timer <= 15) this.unlockBadge('speedy');
-                    if (this.tier >= 3) this.unlockBadge('cartographer');
-                    if (this.mode === 'stealth') this.unlockBadge('stealth');
-                    this.unlockBadge('keymaster');
-                } else {
-                    this.synth.playSFX('gameover');
-                    document.getElementById('hero-monromi-avatar').innerHTML = MonromiAvatar.render('focused');
-                    document.getElementById('overlay-badge').innerText = 'ENTROPY COLLAPSE';
-                    document.getElementById('overlay-title').innerText = 'REALM UNSTABLE';
-                    document.getElementById('overlay-desc').innerText = message || 'Monromi lost path alignment!';
-                    document.getElementById('btn-overlay-action').innerText = 'RE-ALIGN REALM';
-                }
-
-                overlay.classList.remove('hidden');
-            }
-
-            movePlayer(dx, dy) {
-                if (!this.isPlaying) return;
-
-                const targetX = this.player.x + dx;
-                const targetY = this.player.y + dy;
-
-                if (this.maze[targetY] && this.maze[targetY][targetX] === 0) {
-                    this.player.x = targetX;
-                    this.player.y = targetY;
-                    this.synth.playSFX('move');
-
-                    this.player.trail.push({
-                        x: targetX * this.cellSize + this.cellSize / 2,
-                        y: targetY * this.cellSize + this.cellSize / 2,
-                        alpha: 1.0
-                    });
-                    if (this.player.trail.length > 8) this.player.trail.shift();
-
-                    this.checkInteractions();
-                } else {
-                    this.synth.playSFX('bump');
-                }
-
-                this.render();
-            }
-
-            checkInteractions() {
-                this.stars.forEach(star => {
-                    if (!star.collected && star.x === this.player.x && star.y === this.player.y) {
-                        star.collected = true;
-                        this.collectedStarsCount++;
-                        this.synth.playSFX('star');
-                        this.createBurst(this.player.x, this.player.y, THEMES[this.themeKey].star);
-                        this.showLore(star.lore);
-                        this.updateHUD();
-                    }
-                });
-
-                this.curiosityNodes.forEach(node => {
-                    if (!node.collected && node.x === this.player.x && node.y === this.player.y) {
-                        node.collected = true;
-                        this.synth.playSFX('curiosity');
-                        this.createBurst(this.player.x, this.player.y, '#38BDF8');
-                        this.showLore(node.lore, true);
-                    }
-                });
-
-                if (!this.keyItem.collected && this.keyItem.x === this.player.x && this.keyItem.y === this.player.y) {
-                    this.keyItem.collected = true;
-                    this.isKeyCollected = true;
-                    this.synth.playSFX('key');
-                    this.createBurst(this.player.x, this.player.y, THEMES[this.themeKey].key);
-                    this.showLore({ symbol: 'Gateway', lore: 'Monromi activated the Metatron Core! Dimensional portal is active.' });
-                    this.updateHUD();
-                }
-
-                if (this.mode === 'timeAttack') {
-                    this.timeCrystals.forEach(c => {
-                        if (!c.collected && c.x === this.player.x && c.y === this.player.y) {
-                            c.collected = true;
-                            this.timeLimit += 6;
-                            this.synth.playSFX('timeCrystal');
-                            this.createBurst(this.player.x, this.player.y, '#38BDF8');
-                            this.updateHUD();
-                        }
-                    });
-                }
-
-                if (this.player.x === this.exit.x && this.player.y === this.exit.y) {
-                    if (this.isKeyCollected && this.collectedStarsCount >= this.totalStarsRequired) {
-                        this.gameOver(true, 'Monromi Restored Cosmic Order!');
-                    }
-                }
-            }
-
-            showLore(itemLore, showQuiz = false) {
-                if (!itemLore) return;
-                const banner = document.getElementById('lore-banner');
-                const title = document.getElementById('lore-title');
-                const text = document.getElementById('lore-text');
-                const btnA = document.getElementById('btn-quiz-answer-a');
-                const btnB = document.getElementById('btn-quiz-answer-b');
-
-                title.innerText = `[${itemLore.symbol}] REVEALED`;
-                banner.style.top = (document.getElementById('app-header').offsetHeight + 8) + 'px';
-                text.innerText = itemLore.lore;
-
-                if (showQuiz && itemLore.quiz) {
-                    btnA.innerText = `A: ${itemLore.quiz.a}`;
-                    btnB.innerText = `B: ${itemLore.quiz.b}`;
-                    btnA.classList.remove('hidden');
-                    btnB.classList.remove('hidden');
-
-                    btnA.onclick = () => this.handleQuizAnswer(itemLore.quiz.correct === 'a');
-                    btnB.onclick = () => this.handleQuizAnswer(itemLore.quiz.correct === 'b');
-                } else {
-                    btnA.classList.add('hidden');
-                    btnB.classList.add('hidden');
-                }
-
-                banner.classList.remove('hidden');
-                setTimeout(() => {
-                    banner.classList.add('hidden');
-                }, 8000);
-            }
-
-            handleQuizAnswer(isCorrect) {
-                const banner = document.getElementById('lore-banner');
-                if (isCorrect) {
-                    this.synth.playSFX('win');
-                    if (this.mode === 'timeAttack') this.timeLimit += 8;
-                } else {
-                    this.synth.playSFX('bump');
-                }
-                banner.classList.add('hidden');
-            }
-
-            updatePatrols() {
-                if (this.mode !== 'stealth' || !this.isPlaying) return;
-
-                const now = Date.now();
-                const dirs = [{ dx: 0, dy: -1 }, { dx: 1, dy: 0 }, { dx: 0, dy: 1 }, { dx: -1, dy: 0 }];
-
-                this.patrols.forEach(guard => {
-                    if (now - guard.lastMove > 350) {
-                        guard.lastMove = now;
-
-                        const validDirs = [];
-                        dirs.forEach((d, idx) => {
-                            const nx = guard.x + d.dx;
-                            const ny = guard.y + d.dy;
-                            if (this.maze[ny] && this.maze[ny][nx] === 0) validDirs.push(idx);
-                        });
-
-                        if (validDirs.length > 0) {
-                            if (!validDirs.includes(guard.dir) || Math.random() < 0.2) {
-                                guard.dir = validDirs[Math.floor(Math.random() * validDirs.length)];
-                            }
-                            guard.x += dirs[guard.dir].dx;
-                            guard.y += dirs[guard.dir].dy;
-                        }
-
-                        if (guard.x === this.player.x && guard.y === this.player.y) {
-                            this.gameOver(false, 'Distorted by Entropy Anomaly!');
-                        }
-                    }
-                });
-            }
-
-            createBurst(gridX, gridY, color) {
-                const px = gridX * this.cellSize + this.cellSize / 2;
-                const py = gridY * this.cellSize + this.cellSize / 2;
-                for (let i = 0; i < 12; i++) {
-                    const angle = Math.random() * Math.PI * 2;
-                    const speed = Math.random() * 2.5 + 1;
-                    this.particles.push({
-                        x: px, y: py,
-                        vx: Math.cos(angle) * speed,
-                        vy: Math.sin(angle) * speed,
-                        life: 1.0, color: color
-                    });
-                }
-            }
-
-            createConfetti() {
-                const colors = ['#FFD700', '#00FA9A', '#9D4EDD', '#FF6B6B', '#38BDF8'];
-                for (let i = 0; i < 50; i++) {
-                    this.particles.push({
-                        x: Math.random() * this.size,
-                        y: Math.random() * this.size / 2,
-                        vx: (Math.random() - 0.5) * 4,
-                        vy: Math.random() * 3 + 2,
-                        life: 2.0, color: colors[Math.floor(Math.random() * colors.length)]
-                    });
-                }
-            }
-
-            gameLoop(token = (this._loopToken = (this._loopToken || 0) + 1)) {
-                if (token !== this._loopToken) return;
-                if (!this.isPlaying) return;
-                this.geometryAngle += 0.005;
-                this.updatePatrols();
-                this.render();
-                requestAnimationFrame(() => this.gameLoop(token));
-            }
-
-            drawSacredBackground() {
-                const center = this.size / 2;
-                this.ctx.save();
-                this.ctx.strokeStyle = 'rgba(255, 215, 0, 0.05)';
-                this.ctx.lineWidth = 1;
-
-                const radius = this.size / 6;
-                for (let i = 0; i < 6; i++) {
-                    const a = this.geometryAngle + (i * Math.PI / 3);
-                    const cx = center + Math.cos(a) * radius;
-                    const cy = center + Math.sin(a) * radius;
-                    this.ctx.beginPath();
-                    this.ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-                    this.ctx.stroke();
-                }
-
-                this.ctx.beginPath();
-                this.ctx.arc(center, center, radius, 0, Math.PI * 2);
-                this.ctx.stroke();
-                this.ctx.restore();
-            }
-
-            render() {
-                const theme = THEMES[this.themeKey];
-                const cs = this.cellSize;
-                this.particles = this.particles.filter(p => p.life > 0);
-
-                this.ctx.fillStyle = theme.bg;
-                this.ctx.fillRect(0, 0, this.size, this.size);
-
-                this.drawSacredBackground();
-
-                for (let y = 0; y < this.gridSize; y++) {
-                    for (let x = 0; x < this.gridSize; x++) {
-                        if (this.maze[y][x] === 1) {
-                            this.ctx.fillStyle = theme.wall;
-                            this.ctx.fillRect(x * cs, y * cs, cs, cs);
-                            this.ctx.strokeStyle = theme.wallBorder;
-                            this.ctx.lineWidth = 1;
-                            this.ctx.strokeRect(x * cs + 0.5, y * cs + 0.5, cs - 1, cs - 1);
-                        }
-                    }
-                }
-
-                this.player.trail.forEach(t => {
-                    t.alpha -= 0.04;
-                    if (t.alpha > 0) {
-                        this.ctx.beginPath();
-                        this.ctx.arc(t.x, t.y, cs * 0.22, 0, Math.PI * 2);
-                        this.ctx.fillStyle = theme.player;
-                        this.ctx.globalAlpha = t.alpha * 0.45;
-                        this.ctx.fill();
-                        this.ctx.globalAlpha = 1.0;
-                    }
-                });
-
-                this.curiosityNodes.forEach(n => {
-                    if (!n.collected) {
-                        const npx = n.x * cs + cs / 2;
-                        const npy = n.y * cs + cs / 2;
-                        this.ctx.fillStyle = '#38BDF8';
-                        this.ctx.beginPath();
-                        this.ctx.arc(npx, npy, cs * 0.24, 0, Math.PI * 2);
-                        this.ctx.fill();
-                    }
-                });
-
-                const exPx = this.exit.x * cs + cs / 2;
-                const exPy = this.exit.y * cs + cs / 2;
-                this.ctx.beginPath();
-                this.ctx.arc(exPx, exPy, cs * 0.38, 0, Math.PI * 2);
-                this.ctx.fillStyle = this.isKeyCollected && this.collectedStarsCount >= this.totalStarsRequired ? theme.exit : '#334155';
-                this.ctx.fill();
-
-                if (!this.keyItem.collected) {
-                    const kpx = this.keyItem.x * cs + cs / 2;
-                    const kpy = this.keyItem.y * cs + cs / 2;
-                    this.ctx.fillStyle = theme.key;
-                    this.ctx.beginPath();
-                    this.ctx.arc(kpx, kpy, cs * 0.26, 0, Math.PI * 2);
-                    this.ctx.fill();
-                }
-
-                this.stars.forEach(s => {
-                    if (!s.collected) {
-                        const spx = s.x * cs + cs / 2;
-                        const spy = s.y * cs + cs / 2;
-                        this.ctx.fillStyle = theme.star;
-                        this.drawStar(spx, spy, 5, cs * 0.28, cs * 0.14);
-                    }
-                });
-
-                if (this.mode === 'timeAttack') {
-                    this.timeCrystals.forEach(c => {
-                        if (!c.collected) {
-                            const cpx = c.x * cs + cs / 2;
-                            const cpy = c.y * cs + cs / 2;
-                            this.ctx.fillStyle = '#38BDF8';
-                            this.ctx.beginPath();
-                            this.ctx.arc(cpx, cpy, cs * 0.2, 0, Math.PI * 2);
-                            this.ctx.fill();
-                        }
-                    });
-                }
-
-                if (this.mode === 'stealth') {
-                    this.patrols.forEach(guard => {
-                        const gpx = guard.x * cs + cs / 2;
-                        const gpy = guard.y * cs + cs / 2;
-                        this.ctx.fillStyle = '#EF4444';
-                        this.ctx.beginPath();
-                        this.ctx.arc(gpx, gpy, cs * 0.3, 0, Math.PI * 2);
-                        this.ctx.fill();
-                    });
-                }
-
-                const pX = this.player.x * cs + cs / 2;
-                const pY = this.player.y * cs + cs / 2;
-                this.ctx.fillStyle = theme.player;
-                this.ctx.beginPath();
-                this.ctx.arc(pX, pY, cs * 0.36, 0, Math.PI * 2);
-                this.ctx.fill();
-
-                this.ctx.strokeStyle = '#FFD700';
-                this.ctx.lineWidth = 1.5;
-                this.ctx.beginPath();
-                this.ctx.arc(pX, pY, cs * 0.42, 0, Math.PI * 2);
-                this.ctx.stroke();
-
-                if (this.tier >= 3 || this.mode === 'stealth') {
-                    this.ctx.save();
-                    const radius = cs * 3.4;
-                    const gradient = this.ctx.createRadialGradient(pX, pY, cs * 0.4, pX, pY, radius);
-                    gradient.addColorStop(0, 'rgba(0,0,0,0)');
-                    gradient.addColorStop(0.7, 'rgba(0,0,0,0.6)');
-                    gradient.addColorStop(1, theme.fogColor);
-
-                    this.ctx.fillStyle = gradient;
-                    this.ctx.fillRect(0, 0, this.size, this.size);
-                    this.ctx.restore();
-                }
-
-                this.particles.forEach((p, index) => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.life -= 0.03;
-                    if (p.life <= 0) {
-                        /* dead particles are filtered at the start of the next frame */
-                    } else {
-                        this.ctx.fillStyle = p.color;
-                        this.ctx.globalAlpha = p.life;
-                        this.ctx.beginPath();
-                        this.ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-                        this.ctx.fill();
-                        this.ctx.globalAlpha = 1.0;
-                    }
-                });
-            }
-
-            drawStar(cx, cy, spikes, outerRadius, innerRadius) {
-                let rot = Math.PI / 2 * 3;
-                let x = cx;
-                let y = cy;
-                let step = Math.PI / spikes;
-
-                this.ctx.beginPath();
-                this.ctx.moveTo(cx, cy - outerRadius);
-                for (let i = 0; i < spikes; i++) {
-                    x = cx + Math.cos(rot) * outerRadius;
-                    y = cy + Math.sin(rot) * outerRadius;
-                    this.ctx.lineTo(x, y);
-                    rot += step;
-
-                    x = cx + Math.cos(rot) * innerRadius;
-                    y = cy + Math.sin(rot) * innerRadius;
-                    this.ctx.lineTo(x, y);
-                    rot += step;
-                }
-                this.ctx.lineTo(cx, cy - outerRadius);
-                this.ctx.closePath();
-                this.ctx.fill();
-            }
-
-            formatTime(seconds) {
-                const mins = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            }
-
-            updateHUD() {
-                const hudTimer = document.getElementById('hud-timer');
-                if (this.mode === 'timeAttack') {
-                    const remaining = Math.max(0, this.timeLimit - this.timer);
-                    hudTimer.innerText = this.formatTime(remaining);
-                } else {
-                    hudTimer.innerText = this.formatTime(this.timer);
-                }
-
-                document.getElementById('hud-stars').innerText = `${this.collectedStarsCount}/${this.totalStarsRequired}`;
-                const keyHud = document.getElementById('hud-key');
-                keyHud.innerText = this.isKeyCollected ? 'Active' : 'Dormant';
-                keyHud.className = this.isKeyCollected ? 'font-orbitron text-purple-400 font-bold' : 'font-orbitron text-slate-500';
-            }
-
-            unlockBadge(key) {
-                if (this.badges[key] && !this.badges[key].unlocked) {
-                    this.badges[key].unlocked = true;
-                    this.saveProgress();
-                    this.updateBadgesUI();
-                }
-            }
-
-            updateBadgesUI() {
-                const container = document.getElementById('badges-container');
-                if (!container) return;
-                container.innerHTML = '';
-                Object.keys(this.badges).forEach(k => {
-                    const b = this.badges[k];
-                    const card = document.createElement('div');
-                    card.className = `p-3 rounded-xl border flex items-center gap-3 transition-all ${
-                        b.unlocked ? 'bg-amber-500/10 border-amber-500/50 text-white' : 'bg-slate-900/40 border-slate-800 text-slate-500 opacity-60'
-                    }`;
-                    card.innerHTML = `
-                        <div class="text-2xl">${b.icon}</div>
-                        <div>
-                            <div class="text-xs font-bold font-orbitron">${b.name}</div>
-                            <div class="text-xs text-slate-400">${b.desc}</div>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            }
-
-            saveProgress() {
-                try {
-                    localStorage.setItem('monromi_mazes_badges', JSON.stringify(this.badges));
-                } catch (e) {}
-            }
-
-            loadProgress() {
-                try {
-                    const saved = localStorage.getItem('monromi_mazes_badges');
-                    if (saved) {
-                        const parsed = JSON.parse(saved);
-                        Object.keys(parsed).forEach(k => {
-                            if (this.badges[k]) this.badges[k].unlocked = parsed[k].unlocked;
-                        });
-                    }
-                } catch (e) {}
-            }
-
-            setCanvasSize(sz) {
-                const d = Math.min(window.devicePixelRatio || 1, 3);
-                this.size = sz;
-                this.canvas.width = Math.round(sz * d);
-                this.canvas.height = Math.round(sz * d);
-                this.canvas.style.width = sz + 'px';
-                this.canvas.style.height = sz + 'px';
-                this.ctx.setTransform(d, 0, 0, d, 0, 0);
-            }
-
-            computeCanvasSize() {
-                const vv = window.visualViewport;
-                const vw = vv ? vv.width : window.innerWidth;
-                const vh = vv ? vv.height : window.innerHeight;
-                let used = 0;
-                ['app-header', 'tuning-bar', 'controls-bar', 'app-footer'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el && getComputedStyle(el).display !== 'none') used += el.offsetHeight;
-                });
-                return Math.floor(Math.max(180, Math.min(vw - 32, 600, vh - used - 64)));
-            }
-
-            bindHold(id, dx, dy) {
-                const el = document.getElementById(id);
-                let t1 = null, t2 = null;
-                const stop = () => { clearTimeout(t1); clearInterval(t2); t1 = t2 = null; };
-                el.addEventListener('pointerdown', (e) => {
-                    e.preventDefault();
-                    this.synth.init();
-                    stop();
-                    this.movePlayer(dx, dy);
-                    t1 = setTimeout(() => { t2 = setInterval(() => this.movePlayer(dx, dy), 110); }, 260);
-                });
-                ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => el.addEventListener(ev, stop));
-                el.addEventListener('contextmenu', (e) => e.preventDefault());
-            }
-
-            bindSwipe() {
-                let ox = 0, oy = 0, active = false;
-                const c = this.canvas;
-                c.addEventListener('pointerdown', (e) => { active = true; ox = e.clientX; oy = e.clientY; });
-                c.addEventListener('pointermove', (e) => {
-                    if (!active) return;
-                    const dx = e.clientX - ox, dy = e.clientY - oy;
-                    if (Math.max(Math.abs(dx), Math.abs(dy)) < Math.max(16, this.cellSize * 0.6)) return;
-                    if (Math.abs(dx) > Math.abs(dy)) this.movePlayer(dx > 0 ? 1 : -1, 0);
-                    else this.movePlayer(0, dy > 0 ? 1 : -1);
-                    ox = e.clientX; oy = e.clientY;
-                });
-                ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => c.addEventListener(ev, () => { active = false; }));
             }
 
             bindEvents() {
                 window.addEventListener('keydown', (e) => {
-                    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code) && !e.target.closest('input, button')) e.preventDefault();
-                    if (['ArrowUp', 'KeyW'].includes(e.code)) this.movePlayer(0, -1);
-                    else if (['ArrowDown', 'KeyS'].includes(e.code)) this.movePlayer(0, 1);
-                    else if (['ArrowLeft', 'KeyA'].includes(e.code)) this.movePlayer(-1, 0);
-                    else if (['ArrowRight', 'KeyD'].includes(e.code)) this.movePlayer(1, 0);
-                    else if (e.code === 'Space') this.pause();
+                    if (!this.isPlaying) return;
+                    let dx = 0, dy = 0;
+                    if (e.code === 'ArrowUp' || e.code === 'KeyW') dy = -1;
+                    if (e.code === 'ArrowDown' || e.code === 'KeyS') dy = 1;
+                    if (e.code === 'ArrowLeft' || e.code === 'KeyA') dx = -1;
+                    if (e.code === 'ArrowRight' || e.code === 'KeyD') dx = 1;
+                    if (dx !== 0 || dy !== 0) {
+                        e.preventDefault();
+                        this.movePlayer(dx, dy);
+                    }
                 });
 
-                this.bindHold('btn-touch-up', 0, -1);
-                this.bindHold('btn-touch-down', 0, 1);
-                this.bindHold('btn-touch-left', -1, 0);
-                this.bindHold('btn-touch-right', 1, 0);
-
-                this.bindSwipe();
-                document.addEventListener('visibilitychange', () => { if (document.hidden && this.isPlaying) this.pause(); });
-                document.getElementById('btn-quick-restart').addEventListener('click', () => this.start());
-
-                document.getElementById('btn-random-realm').addEventListener('click', () => {
-                    this.tier = Math.floor(Math.random() * 4) + 1;
-                    const modes = ['classic', 'timeAttack', 'stealth'];
-                    this.mode = modes[Math.floor(Math.random() * modes.length)];
-                    const themes = ['cyberpunk', 'dungeon', 'synthwave', 'zen'];
-                    this.themeKey = themes[Math.floor(Math.random() * themes.length)];
-
-                    document.querySelectorAll('.btn-tier-select').forEach(b => {
-                        const isMatch = parseInt(b.getAttribute('data-tier')) === this.tier;
-                        b.className = isMatch 
-                            ? 'btn-tier-select p-3 rounded-xl border bg-amber-500/20 border-amber-400 text-white text-left transition-all'
-                            : 'btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/40 text-slate-300 text-left transition-all';
-                    });
-
-                    document.querySelectorAll('.btn-mode-select').forEach(b => {
-                        const isMatch = b.getAttribute('data-mode') === this.mode;
-                        b.className = isMatch 
-                            ? 'btn-mode-select p-3 rounded-xl border bg-pink-500/20 border-pink-400 text-white text-left transition-all'
-                            : 'btn-mode-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-pink-500/40 text-slate-300 text-left transition-all';
-                    });
-
-                    document.querySelectorAll('.btn-theme-select').forEach(b => {
-                        const isMatch = b.getAttribute('data-theme') === this.themeKey;
-                        b.className = isMatch 
-                            ? 'btn-theme-select p-3 rounded-xl border bg-emerald-500/20 border-emerald-400 text-white text-left transition-all'
-                            : 'btn-theme-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-emerald-500/40 text-slate-300 text-left transition-all';
-                    });
-
-                    this.synth.playSFX('key');
-                    this.start();
+                const click = (id, fn) => document.getElementById(id)?.addEventListener('click', fn);
+                click('btn-overlay-action', () => {
+                    document.getElementById('overlay-screen').classList.add('opacity-0', 'pointer-events-none');
+                    this.startNewMaze();
+                });
+                click('btn-open-menu', () => document.getElementById('modal-dashboard').classList.remove('opacity-0', 'pointer-events-none'));
+                click('btn-close-modal', () => document.getElementById('modal-dashboard').classList.add('opacity-0', 'pointer-events-none'));
+                click('btn-open-codex', () => document.getElementById('modal-codex').classList.remove('opacity-0', 'pointer-events-none'));
+                click('btn-close-codex', () => document.getElementById('modal-codex').classList.add('opacity-0', 'pointer-events-none'));
+                click('btn-open-deck', () => this.openDeckModal());
+                click('btn-close-deck', () => document.getElementById('modal-deck').classList.add('opacity-0', 'pointer-events-none'));
+                click('btn-open-primer', () => document.getElementById('modal-primer').classList.remove('opacity-0', 'pointer-events-none'));
+                click('btn-close-primer', () => document.getElementById('modal-primer').classList.add('opacity-0', 'pointer-events-none'));
+                click('btn-audio-toggle', () => this.synth.toggleSound());
+                click('btn-collect-card', () => {
+                    if (this.activeCardLore) {
+                        this.collectedDeck.push(this.activeCardLore);
+                        document.getElementById('lore-banner').classList.add('hidden');
+                        document.getElementById('deck-count-badge').innerText = this.collectedDeck.length;
+                    }
                 });
 
-                document.getElementById('btn-toggle-hub-guide').addEventListener('click', () => {
-                    const guideBanner = document.getElementById('hub-guide-banner');
-                    guideBanner.classList.toggle('hidden');
-                });
-
-                // Audio toggle
-                document.getElementById('btn-audio-toggle').addEventListener('click', () => {
-                    const enabled = this.synth.toggleSound();
-                    document.getElementById('icon-sound-on').classList.toggle('hidden', !enabled);
-                    document.getElementById('icon-sound-off').classList.toggle('hidden', enabled);
-                });
-
-                // Tuning toggle
-                document.getElementById('btn-toggle-tuning').addEventListener('click', (e) => {
-                    const nextTuning = this.synth.tuningStandard === 432 ? 440 : 432;
-                    this.synth.setTuningStandard(nextTuning);
-                    e.target.innerText = `${nextTuning} Hz (${nextTuning === 432 ? 'Pythagorean' : 'Concert Pitch'})`;
-                });
-
-                // Modals
-                const modalDash = document.getElementById('modal-dashboard');
-                document.getElementById('btn-open-menu').addEventListener('click', () => {
-                    if (this.isPlaying) this.pause();
-                    modalDash.classList.remove('opacity-0', 'pointer-events-none');
-                });
-                document.getElementById('btn-close-modal').addEventListener('click', () => {
-                    modalDash.classList.add('opacity-0', 'pointer-events-none');
-                });
-
-                const modalCodex = document.getElementById('modal-codex');
-                document.getElementById('btn-open-codex').addEventListener('click', () => {
-                    if (this.isPlaying) this.pause();
-                    this.labs.codexOpen = true;
-                    modalCodex.classList.remove('opacity-0', 'pointer-events-none');
-                });
-                document.getElementById('btn-close-codex').addEventListener('click', () => {
-                    this.labs.codexOpen = false;
-                    modalCodex.classList.add('opacity-0', 'pointer-events-none');
-                });
-
-                const modalPrimer = document.getElementById('modal-primer');
-                document.getElementById('btn-open-primer').addEventListener('click', () => {
-                    if (this.isPlaying) this.pause();
-                    modalPrimer.classList.remove('opacity-0', 'pointer-events-none');
-                });
-                document.getElementById('btn-overlay-primer').addEventListener('click', () => {
-                    modalPrimer.classList.remove('opacity-0', 'pointer-events-none');
-                });
-                document.getElementById('btn-close-primer').addEventListener('click', () => {
-                    modalPrimer.classList.add('opacity-0', 'pointer-events-none');
-                });
-                document.getElementById('btn-primer-start-playing').addEventListener('click', () => {
-                    modalPrimer.classList.add('opacity-0', 'pointer-events-none');
-                    if (this.paused) this.pause(); else if (!this.isPlaying) this.start();
-                });
-
-                // Codex Tabs Switching
-                document.querySelectorAll('.btn-codex-tab').forEach(tab => {
-                    tab.addEventListener('click', (e) => {
-                        const targetId = e.currentTarget.getAttribute('data-tab');
-                        document.querySelectorAll('.btn-codex-tab').forEach(t => {
-                            t.className = 'btn-codex-tab px-4 py-2 rounded-xl text-xs font-bold font-orbitron bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white';
-                        });
-                        e.currentTarget.className = 'btn-codex-tab px-4 py-2 rounded-xl text-xs font-bold font-orbitron bg-cyan-500/20 border border-cyan-400 text-white';
-
-                        document.querySelectorAll('.codex-tab-content').forEach(c => c.classList.add('hidden'));
-                        const targetContent = document.getElementById(targetId);
-                        if (targetContent) targetContent.classList.remove('hidden');
-                    });
-                });
-
-                // Selection Handlers in Hub
                 document.querySelectorAll('.btn-tier-select').forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.btn-tier-select').forEach(b => {
-                            b.className = 'btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/40 text-slate-300 text-left transition-all';
-                        });
-                        const target = e.currentTarget;
-                        target.className = 'btn-tier-select p-3 rounded-xl border bg-amber-500/20 border-amber-400 text-white text-left transition-all';
-                        this.tier = parseInt(target.getAttribute('data-tier'));
+                        document.querySelectorAll('.btn-tier-select').forEach(b => b.className = 'btn-tier-select p-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 text-left text-xs font-bold');
+                        e.currentTarget.className = 'btn-tier-select p-3 rounded-xl border bg-amber-500/20 border-amber-400 text-white text-left text-xs font-bold';
+                        this.tier = parseInt(e.currentTarget.getAttribute('data-tier'));
+                        const sizes = { 1: 9, 2: 13, 3: 17, 4: 21 };
+                        this.gridSize = sizes[this.tier] || 9;
                     });
                 });
 
-                document.querySelectorAll('.btn-mode-select').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.btn-mode-select').forEach(b => {
-                            b.className = 'btn-mode-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-pink-500/40 text-slate-300 text-left transition-all';
+                click('btn-apply-settings', () => {
+                    document.getElementById('modal-dashboard').classList.add('opacity-0', 'pointer-events-none');
+                    this.startNewMaze();
+                });
+            }
+
+            openDeckModal() {
+                const container = document.getElementById('deck-cards-container');
+                container.innerHTML = this.collectedDeck.length === 0 ? '<p class="text-slate-500 text-xs col-span-2">No cards collected yet.</p>' : '';
+                this.collectedDeck.forEach(card => {
+                    container.innerHTML += `<div class="p-3 bg-slate-900 border border-amber-400/40 rounded-xl text-xs"><b class="text-amber-300">${card.symbol}</b><p class="text-slate-300 mt-1">${card.lore}</p></div>`;
+                });
+                document.getElementById('modal-deck').classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            startNewMaze() {
+                this.maze = MazeGenerator.generate(this.gridSize);
+                this.player = { x: 1, y: 1 };
+                this.exit = { x: this.gridSize - 2, y: this.gridSize - 2 };
+                this.isKeyCollected = false;
+                this.collectedStarsCount = 0;
+                this.stars = [];
+                this.blocks = [];
+                this.sockets = [];
+                this.timeCrystals = [];
+
+                const timers = { 1: 60, 2: 45, 3: 35, 4: 30 };
+                this.timer = timers[this.tier] || 60;
+
+                // Spawn Key
+                this.keyItem = { x: this.exit.x - 1, y: this.exit.y };
+
+                // Spawn Sockets & Pushable Blocks based on Tier
+                const numBlocks = this.tier === 1 ? 0 : this.tier;
+                for (let i = 0; i < numBlocks; i++) {
+                    let bx = 3 + i * 2, by = 3;
+                    let sx = this.gridSize - 3 - i * 2, sy = this.gridSize - 3;
+                    if (this.maze[by]?.[bx] === 0) this.blocks.push({ x: bx, y: by });
+                    if (this.maze[sy]?.[sx] === 0) this.sockets.push({ x: sx, y: sy, filled: false });
+                }
+
+                // Spawn Time Crystals
+                for (let i = 0; i < 2; i++) {
+                    let tx = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
+                    let ty = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
+                    if (this.maze[ty][tx] === 0) this.timeCrystals.push({ x: tx, y: ty });
+                }
+
+                // Spawn Stars
+                let spawned = 0;
+                while (spawned < 3) {
+                    let sx = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
+                    let sy = Math.floor(Math.random() * (this.gridSize - 2)) + 1;
+                    if (this.maze[sy][sx] === 0 && (sx !== 1 || sy !== 1)) {
+                        this.stars.push({ x: sx, y: sy, collected: false, lore: SACRED_LORE[spawned % SACRED_LORE.length] });
+                        spawned++;
+                    }
+                }
+
+                this.resizeCanvas();
+                this.isPlaying = true;
+                this.startTimer();
+                this.gameLoop();
+            }
+
+            startTimer() {
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                this.timerInterval = setInterval(() => {
+                    if (!this.isPlaying) return;
+                    this.timer--;
+                    document.getElementById('hud-timer').innerText = `${this.timer}s`;
+                    if (this.timer <= 0) {
+                        this.isPlaying = false;
+                        clearInterval(this.timerInterval);
+                        this.synth.playSFX('bump');
+                        alert('Entropy overload! Time ran out. Try again!');
+                        document.getElementById('overlay-screen').classList.remove('opacity-0', 'pointer-events-none');
+                    }
+                }, 1000);
+            }
+
+            movePlayer(dx, dy) {
+                const nx = this.player.x + dx;
+                const ny = this.player.y + dy;
+
+                if (!this.maze[ny] || this.maze[ny][nx] === 1) {
+                    this.synth.playSFX('bump');
+                    return;
+                }
+
+                // Check Pushable Block
+                const blockIdx = this.blocks.findIndex(b => b.x === nx && b.y === ny);
+                if (blockIdx !== -1) {
+                    const nnx = nx + dx;
+                    const nny = ny + dy;
+                    // Check if block can be pushed into empty space or socket
+                    const blockedByWall = this.maze[nny]?.[nnx] === 1;
+                    const blockedByAnotherBlock = this.blocks.some(b => b.x === nnx && b.y === nny);
+
+                    if (!blockedByWall && !blockedByAnotherBlock) {
+                        this.blocks[blockIdx].x = nnx;
+                        this.blocks[blockIdx].y = nny;
+                        this.player.x = nx;
+                        this.player.y = ny;
+                        this.synth.playSFX('move');
+
+                        // Check Socket Completion
+                        this.sockets.forEach(s => {
+                            s.filled = this.blocks.some(b => b.x === s.x && b.y === s.y);
                         });
-                        const target = e.currentTarget;
-                        target.className = 'btn-mode-select p-3 rounded-xl border bg-pink-500/20 border-pink-400 text-white text-left transition-all';
-                        this.mode = target.getAttribute('data-mode');
-                    });
+
+                        const allSocketsFilled = this.sockets.length === 0 || this.sockets.every(s => s.filled);
+                        if (allSocketsFilled && !this.isKeyCollected) {
+                            document.getElementById('hud-sockets').innerText = 'Solved!';
+                            document.getElementById('hud-sockets').className = 'font-orbitron text-emerald-400 font-bold';
+                        }
+                    } else {
+                        this.synth.playSFX('bump');
+                        return;
+                    }
+                } else {
+                    this.player.x = nx;
+                    this.player.y = ny;
+                    this.synth.playSFX('move');
+                }
+
+                // Check Time Crystals
+                this.timeCrystals.forEach((tc, idx) => {
+                    if (tc.x === this.player.x && tc.y === this.player.y) {
+                        this.timeCrystals.splice(idx, 1);
+                        this.timer += 15;
+                        this.synth.playSFX('star');
+                    }
                 });
 
-                document.querySelectorAll('.btn-theme-select').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.btn-theme-select').forEach(b => {
-                            b.className = 'btn-theme-select p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-emerald-500/40 text-slate-300 text-left transition-all';
-                        });
-                        const target = e.currentTarget;
-                        target.className = 'btn-theme-select p-3 rounded-xl border bg-emerald-500/20 border-emerald-400 text-white text-left transition-all';
-                        this.themeKey = target.getAttribute('data-theme');
-                    });
+                // Check Key
+                const allSocketsFilled = this.sockets.length === 0 || this.sockets.every(s => s.filled);
+                if (!this.isKeyCollected && allSocketsFilled && this.player.x === this.keyItem.x && this.player.y === this.keyItem.y) {
+                    this.isKeyCollected = true;
+                    this.synth.playSFX('win');
+                    document.getElementById('hud-key').innerText = 'Unlocked!';
+                    document.getElementById('hud-key').className = 'font-orbitron text-emerald-400 font-bold';
+                }
+
+                // Check Stars
+                this.stars.forEach(s => {
+                    if (!s.collected && s.x === this.player.x && s.y === this.player.y) {
+                        s.collected = true;
+                        this.collectedStarsCount++;
+                        this.synth.playSFX('star');
+                        document.getElementById('hud-stars').innerText = `${this.collectedStarsCount}/3`;
+                        this.activeCardLore = s.lore;
+                        document.getElementById('lore-text').innerText = s.lore.lore;
+                        document.getElementById('lore-banner').classList.remove('hidden');
+                    }
                 });
 
-                document.getElementById('btn-apply-settings').addEventListener('click', () => {
-                    modalDash.classList.add('opacity-0', 'pointer-events-none');
-                    this.start();
+                // Check Exit Portal
+                if (this.player.x === this.exit.x && this.player.y === this.exit.y) {
+                    if (this.isKeyCollected && this.collectedStarsCount >= 3) {
+                        this.handleWin();
+                    } else {
+                        this.synth.playSFX('bump');
+                    }
+                }
+
+                document.getElementById('hud-sockets').innerText = `${this.sockets.filter(s => s.filled).length}/${this.sockets.length || 1}`;
+            }
+
+            handleWin() {
+                this.isPlaying = false;
+                this.synth.playSFX('win');
+                if (this.timerInterval) clearInterval(this.timerInterval);
+
+                const overlay = document.getElementById('overlay-screen');
+                document.getElementById('overlay-badge').innerText = 'PUZZLE ALIGNED!';
+                document.getElementById('overlay-title').innerText = 'REALM HARMONIZED!';
+                document.getElementById('overlay-desc').innerText = `Monromi solved the push-block puzzles and escaped with ${this.timer}s remaining!`;
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            resizeCanvas() {
+                const wrapper = document.getElementById('canvas-wrapper');
+                if (!wrapper) return;
+                const maxW = Math.min(wrapper.clientWidth - 16, 520);
+                this.canvas.width = maxW;
+                this.canvas.height = maxW;
+                this.cellSize = maxW / this.gridSize;
+            }
+
+            gameLoop() {
+                if (!this.isPlaying) return;
+                this.draw();
+                requestAnimationFrame(() => this.gameLoop());
+            }
+
+            draw() {
+                this.ctx.fillStyle = '#05050D';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Maze Walls
+                for (let r = 0; r < this.gridSize; r++) {
+                    for (let c = 0; c < this.gridSize; c++) {
+                        if (this.maze[r][c] === 1) {
+                            this.ctx.fillStyle = '#1e1b4b';
+                            this.ctx.fillRect(c * this.cellSize, r * this.cellSize, this.cellSize, this.cellSize);
+                        }
+                    }
+                }
+
+                // Sockets
+                this.sockets.forEach(s => {
+                    this.ctx.fillStyle = s.filled ? '#34d399' : '#0284c7';
+                    this.ctx.fillRect(s.x * this.cellSize + 4, s.y * this.cellSize + 4, this.cellSize - 8, this.cellSize - 8);
                 });
 
-                document.getElementById('btn-overlay-action').addEventListener('click', () => {
-                    if (this.paused) { this.pause(); return; }
-                    this.start();
+                // Exit Portal
+                const allSocketsFilled = this.sockets.length === 0 || this.sockets.every(s => s.filled);
+                this.ctx.fillStyle = this.isKeyCollected && this.collectedStarsCount >= 3 ? '#a855f7' : '#475569';
+                this.ctx.beginPath();
+                this.ctx.arc((this.exit.x + 0.5) * this.cellSize, (this.exit.y + 0.5) * this.cellSize, this.cellSize * 0.4, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                // Key Item
+                if (!this.isKeyCollected && allSocketsFilled) {
+                    this.ctx.fillStyle = '#c084fc';
+                    this.ctx.beginPath();
+                    this.ctx.arc((this.keyItem.x + 0.5) * this.cellSize, (this.keyItem.y + 0.5) * this.cellSize, this.cellSize * 0.3, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+
+                // Pushable Blocks
+                this.blocks.forEach(b => {
+                    this.ctx.fillStyle = '#f59e0b';
+                    this.ctx.fillRect(b.x * this.cellSize + 3, b.y * this.cellSize + 3, this.cellSize - 6, this.cellSize - 6);
                 });
 
-                const onResize = () => { if (!this.maze.length) return; this.setCanvasSize(this.computeCanvasSize()); this.cellSize = this.size / this.gridSize; this.render(); };
-                window.addEventListener('resize', onResize);
-                window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
+                // Time Crystals
+                this.timeCrystals.forEach(tc => {
+                    this.ctx.fillStyle = '#38bdf8';
+                    this.ctx.font = `${this.cellSize * 0.6}px sans-serif`;
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.fillText('⌛', (tc.x + 0.5) * this.cellSize, (tc.y + 0.5) * this.cellSize);
+                });
+
+                // Stars
+                this.stars.forEach(s => {
+                    if (!s.collected) {
+                        this.ctx.fillStyle = '#34d399';
+                        this.ctx.font = `${this.cellSize * 0.6}px sans-serif`;
+                        this.ctx.textAlign = 'center';
+                        this.ctx.textBaseline = 'middle';
+                        this.ctx.fillText('Φ', (s.x + 0.5) * this.cellSize, (s.y + 0.5) * this.cellSize);
+                    }
+                });
+
+                // Player
+                this.ctx.fillStyle = '#fbbf24';
+                this.ctx.beginPath();
+                this.ctx.arc((this.player.x + 0.5) * this.cellSize, (this.player.y + 0.5) * this.cellSize, this.cellSize * 0.35, 0, Math.PI * 2);
+                this.ctx.fill();
             }
         }
 
-        // --- Offline + install support ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
-        }
-
-        // --- 5. INITIALIZE APPLICATION ON WINDOW LOAD ---
-        window.onload = () => {
-            window.gameInstance = new MazeGame();
-        };
+        window.addEventListener('load', () => { window.gameInstance = new MazeGame(); });
     </script>
 </body>
 </html>
