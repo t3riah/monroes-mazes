@@ -108,7 +108,58 @@
         .animate-card-deal {
             animation: cardShuffleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-    </style>
+    
+/* Classic Arcade Title Screen Enhancements */
+        @keyframes marqueePulse {
+            0%, 100% { border-color: rgba(251, 191, 36, 0.9); box-shadow: 0 0 25px rgba(251, 191, 36, 0.6), inset 0 0 15px rgba(236, 72, 153, 0.4); }
+            50% { border-color: rgba(236, 72, 153, 0.9); box-shadow: 0 0 35px rgba(168, 85, 247, 0.8), inset 0 0 25px rgba(56, 189, 248, 0.5); }
+        }
+        .arcade-title-panel {
+            animation: marqueePulse 2.5s infinite ease-in-out;
+            background: radial-gradient(circle at center, rgba(15, 12, 35, 0.96) 0%, rgba(5, 5, 13, 0.99) 100%);
+        }
+        @keyframes blinkPrompt {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.98); }
+        }
+        .animate-blink {
+            animation: blinkPrompt 1.2s infinite ease-in-out;
+        }
+
+.accent-purple-400{accent-color:#c084fc}
+.bg-cyan-500\/20{background-color:rgba(6,182,212,.2)}
+.bg-indigo-500\/20{background-color:rgba(99,102,241,.2)}
+.bg-teal-500\/20{background-color:rgba(20,184,166,.2)}
+.border-indigo-500\/40{border-color:rgba(99,102,241,.4)}
+.border-purple-500\/40{border-color:rgba(168,85,247,.4)}
+.border-teal-500\/40{border-color:rgba(20,184,166,.4)}
+.font-normal{font-weight:400}
+.from-purple-500{--tw-gradient-from:#a855f7 var(--tw-gradient-from-position);--tw-gradient-to:rgba(168,85,247,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}
+.to-pink-500{--tw-gradient-to:#ec4899 var(--tw-gradient-to-position)}
+.gap-4{gap:1rem}
+.hover\:border-amber-300:hover{border-color:#fcd34d}
+.hover\:border-amber-400\/60:hover{border-color:rgba(251,191,36,.6)}
+.hover\:border-cyan-400:hover{border-color:#22d3ee}
+.hover\:border-emerald-400:hover{border-color:#34d399}
+.hover\:border-indigo-400:hover{border-color:#818cf8}
+.hover\:border-purple-400:hover{border-color:#c084fc}
+.hover\:border-teal-400:hover{border-color:#2dd4bf}
+.hover\:opacity-90:hover{opacity:.9}
+.leading-tight{line-height:1.25}
+.max-h-72{max-height:18rem}
+.pb-2{padding-bottom:.5rem}
+.space-y-1\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}
+.text-amber-100{--tw-text-opacity:1;color:rgb(254 243 199/var(--tw-text-opacity,1))}
+.text-emerald-400\/70{color:rgba(52,211,153,.7)}
+.text-indigo-200{--tw-text-opacity:1;color:rgb(199 210 254/var(--tw-text-opacity,1))}
+.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252/var(--tw-text-opacity,1))}
+.text-pink-300{--tw-text-opacity:1;color:rgb(249 168 212/var(--tw-text-opacity,1))}
+.text-teal-200{--tw-text-opacity:1;color:rgb(153 246 228/var(--tw-text-opacity,1))}
+.text-teal-300{--tw-text-opacity:1;color:rgb(94 234 212/var(--tw-text-opacity,1))}
+@media (min-width:640px){.sm\:text-2xl{font-size:1.5rem;line-height:2rem}}
+
+.arcade-avatar-glow { filter: drop-shadow(0 0 15px rgba(251,191,36,0.6)); }
+</style>
 </head>
 <body class="min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-amber-500 selection:text-black">
 
@@ -234,26 +285,32 @@
                 <canvas id="game-canvas" width="400" height="400" class="block rounded-xl bg-slate-950 transition-all"></canvas>
 
                 <!-- Overlay Modal -->
-                <div id="overlay-screen" class="absolute inset-0 bg-slate-950/94 backdrop-blur-md flex flex-col items-center p-5 text-center transition-all z-20 overflow-y-auto">
+                <div id="overlay-screen" class="absolute inset-0 bg-slate-950/94 backdrop-blur-md flex flex-col items-center p-5 text-center transition-all z-20 overflow-y-auto arcade-title-panel">
                     <div class="max-w-md w-full space-y-3 sm:space-y-4 flex flex-col items-center" style="margin: auto;">
-                        <div id="hero-monromi-avatar" class="w-14 h-14 sm:w-20 sm:h-20 mb-1"></div>
+                        <div id="hero-monromi-avatar" class="w-14 h-14 sm:w-20 sm:h-20 mb-1 arcade-avatar-glow"></div>
                         <div id="overlay-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-orbitron">
-                            MONROMI'S DREAMSCAPE REALM
+                            ★ ARCADE EDITION ★
                         </div>
                         <h2 id="overlay-title" class="text-2xl sm:text-3xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-pink-400 to-purple-400 tracking-wide">
                             MONROMI'S MAZES
                         </h2>
+                        <p id="overlay-subtitle" class="text-xs font-mono tracking-wider text-amber-300 uppercase">★ Insert coin to explore sacred realms ★</p>
                         <p id="overlay-desc" class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                            Guide Monromi through Sacred Geometry realms! Gather fundamental physics constants (<span data-explain="Golden Ratio Phi (1.618): Found in sunflower spirals and galaxies!">Φ</span>, <span data-explain="Speed of Light: 299,792,458 meters per second!">c</span>, <span data-explain="Planck's Constant: The quantum fundamental unit of physical scale!">ħ</span>) and open the Metatron Gateway to restore cosmic harmony!
+                            Guide Monromi through hyper-dimensional mazes! Gather fundamental constants (<span data-explain="Golden Ratio Phi (1.618): Found in nature's spirals and growth patterns.">Phi Φ</span>, <span data-explain="Speed of Light (c): The absolute velocity of cause and effect in physics.">Light Speed c</span>, <span data-explain="Planck Constant (hbar): The smallest quantum energy unit.">Planck ħ</span>) to align sacred geometry matrices.
                         </p>
 
-                        <div class="w-full flex flex-col sm:flex-row gap-2 pt-2">
-                            <button id="btn-overlay-primer" class="flex-1 py-3 rounded-xl bg-slate-900 border border-emerald-400/50 text-emerald-300 font-bold font-orbitron text-xs hover:bg-slate-800 transition-all">
-                                🎓 START PRIMER ("WHAT IS")
+                        <div class="w-full flex flex-col gap-2 pt-2">
+                            <button id="btn-overlay-action" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 text-slate-950 font-black font-orbitron text-xs tracking-wider hover:opacity-95 shadow-lg shadow-purple-500/20 transition-all animate-blink">
+                                ▶ PRESS START (432Hz JOURNEY)
                             </button>
-                            <button id="btn-overlay-action" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 text-slate-950 font-black font-orbitron text-xs tracking-wider hover:opacity-95 shadow-lg shadow-purple-500/20 transition-all">
-                                BEGIN JOURNEY (432Hz)
-                            </button>
+                            <div class="flex gap-2 w-full">
+                                <button id="btn-overlay-primer" class="flex-1 py-2 rounded-xl bg-slate-900 border border-emerald-400/50 text-emerald-300 font-bold font-orbitron text-xs hover:bg-slate-800 transition-all">
+                                    🎓 PRIMER
+                                </button>
+                                <button id="btn-overlay-random" class="flex-1 py-2 rounded-xl bg-slate-900 border border-purple-400/50 text-purple-300 font-bold font-orbitron text-xs hover:bg-slate-800 transition-all">
+                                    🎲 RANDOM
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Sacred Geometry End-of-Game Synthesis Card (Visible on Victory) -->
@@ -289,9 +346,37 @@
             <h2 class="text-2xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-amber-300 to-purple-400">HARMONIC CODEX & LABS</h2>
             <p class="text-xs text-slate-400">Interactive concept demonstrators: wave-particle duality, sacred geometry, and the theory dictionary.</p>
             <div class="flex flex-wrap gap-2">
-                <button class="btn-codex-tab px-3 py-1.5 rounded-lg text-xs font-bold font-orbitron transition-all bg-amber-500 text-slate-950 shadow-md" data-tab="quantum">Quantum Double-Slit</button>
+                <button class="btn-codex-tab px-3 py-1.5 rounded-lg text-xs font-bold font-orbitron transition-all bg-amber-500 text-slate-950 shadow-md" data-tab="cymatics">Cymatics Plate</button>
+                <button class="btn-codex-tab px-3 py-1.5 rounded-lg text-xs font-bold font-orbitron transition-all bg-slate-900 text-slate-400 hover:text-amber-300" data-tab="quantum">Quantum Double-Slit</button>
                 <button class="btn-codex-tab px-3 py-1.5 rounded-lg text-xs font-bold font-orbitron transition-all bg-slate-900 text-slate-400 hover:text-amber-300" data-tab="geometry">Sacred Geometry</button>
                 <button class="btn-codex-tab px-3 py-1.5 rounded-lg text-xs font-bold font-orbitron transition-all bg-slate-900 text-slate-400 hover:text-amber-300" data-tab="theory">Theory Dictionary</button>
+            </div>
+
+            <button id="btn-open-binaural" class="w-full py-2 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-400/50 text-purple-200 font-bold font-orbitron text-xs transition-all">
+                🎧 Open Binaural &amp; Solfeggio Audio Lab
+            </button>
+
+            <!-- TAB 1: CYMATICS PLATE (restored: the V4.1 engine and slider wiring already existed, the panel was missing) -->
+            <div id="tab-cymatics" class="codex-tab-content space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-bold text-emerald-300 font-orbitron">Chladni Cymatic Wave Patterns</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Acoustic sound waves create geometric nodes on vibrating surfaces! Adjust the standing wave frequency multiplier to observe how harmonic resonance organizes particles into geometric symmetries.
+                        </p>
+                        <div class="space-y-1.5 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                            <div class="flex justify-between text-xs font-mono text-emerald-400">
+                                <span>Acoustic Frequency:</span>
+                                <span id="cymatic-freq-val">432 Hz (Mode 3, 3)</span>
+                            </div>
+                            <input id="slider-cymatics-freq" type="range" min="1" max="6" value="3" class="w-full accent-cyan-400 cursor-pointer">
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center justify-center bg-slate-950 p-4 rounded-2xl border border-emerald-500/30">
+                        <canvas id="cymatics-canvas" width="240" height="240" class="rounded-xl block bg-slate-950"></canvas>
+                        <span class="text-[10px] text-emerald-400/70 mt-2 font-mono">Chladni Resonance Plate Visualizer</span>
+                    </div>
+                </div>
             </div>
 
             <!-- TAB 2: QUANTUM DOUBLE-SLIT SIMULATOR -->
@@ -569,6 +654,10 @@
                     </button>
                 </div>
             </div>
+
+            <button id="btn-open-binaural-hub" class="w-full py-2.5 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-400/50 text-purple-200 font-bold font-orbitron text-xs transition-all">
+                🎧 Open Binaural &amp; Solfeggio Audio Lab
+            </button>
 
             <!-- Achievements & Badges -->
             <div class="space-y-3 border-t border-slate-700/80 pt-4">
@@ -885,6 +974,31 @@
                 }
             }
 
+            playTone(freq, duration = 0.2, type = 'sine', volume = 0.15) {
+                if (!this.isEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    const now = this.ctx.currentTime;
+
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, now);
+
+                    gain.gain.setValueAtTime(volume, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(now);
+                    osc.stop(now + duration);
+                } catch (err) {
+                    // Ignore silent audio context state transitions
+                }
+            }
             playSFX(type) {
                 if (!this.isEnabled) return;
                 this.init();
@@ -973,6 +1087,88 @@
                 } catch (e) {
                     console.warn("SFX failed:", e);
                 }
+            }
+        }
+
+// --- BINAURAL AUDIO ENGINE ---
+        class BinauralAudioEngine {
+            constructor() {
+                this.ctx = null;
+                this.isPlaying = false;
+                this.leftOsc = null;
+                this.rightOsc = null;
+                this.carrierFreq = 432;
+                this.binauralBeatFreq = 2.5;
+            }
+
+            init() {
+                try {
+                    if (!this.ctx) {
+                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                        this.ctx = new AudioCtx();
+                    }
+                    if (this.ctx && this.ctx.state === 'suspended') {
+                        this.ctx.resume();
+                    }
+                } catch (e) {
+                    console.warn("Binaural AudioContext init error:", e);
+                }
+            }
+
+            toggleSynth() {
+                this.init();
+                if (this.isPlaying) {
+                    this.stop();
+                    return false;
+                } else {
+                    this.start();
+                    return true;
+                }
+            }
+
+            start() {
+                if (!this.ctx) return;
+                this.stop();
+
+                const now = this.ctx.currentTime;
+                const merger = this.ctx.createChannelMerger(2);
+                const masterGain = this.ctx.createGain();
+                masterGain.gain.setValueAtTime(0.08, now);
+
+                this.leftOsc = this.ctx.createOscillator();
+                this.leftOsc.type = 'sine';
+                this.leftOsc.frequency.setValueAtTime(this.carrierFreq, now);
+
+                this.rightOsc = this.ctx.createOscillator();
+                this.rightOsc.type = 'sine';
+                this.rightOsc.frequency.setValueAtTime(this.carrierFreq + this.binauralBeatFreq, now);
+
+                this.leftOsc.connect(merger, 0, 0);
+                this.rightOsc.connect(merger, 0, 1);
+
+                merger.connect(masterGain);
+                masterGain.connect(this.ctx.destination);
+
+                this.leftOsc.start(now);
+                this.rightOsc.start(now);
+                this.isPlaying = true;
+            }
+
+            stop() {
+                if (this.leftOsc) { try { this.leftOsc.stop(); } catch(e){} }
+                if (this.rightOsc) { try { this.rightOsc.stop(); } catch(e){} }
+                this.isPlaying = false;
+            }
+
+            setBand(band) {
+                const map = { delta: 2.5, theta: 6.0, alpha: 10.0, gamma: 40.0 };
+                this.binauralBeatFreq = map[band] || 6.0;
+                if (this.isPlaying) this.start();
+            }
+
+            setCarrier(hz) {
+                this.carrierFreq = hz;
+                if (this.isPlaying) this.start();
             }
         }
 
@@ -1341,6 +1537,7 @@
                 this.ctx = this.canvas.getContext('2d');
                 this.synth = new AudioSynthEngine();
                 this.labs = new InteractiveLabsEngine();
+                this.binaural = new BinauralAudioEngine();
 
                 this.tier = 1;
                 this.mode = 'classic';
@@ -1748,6 +1945,16 @@
                     this.startNewMaze();
                 });
 
+                safeClick('btn-overlay-random', () => {
+                    this.tier = Math.floor(Math.random() * 4) + 1;
+                    const sizes = { 1: 9, 2: 15, 3: 21, 4: 31 };
+                    this.gridSize = sizes[this.tier] || 9;
+                    const themes = ['cyberpunk', 'dungeon', 'synthwave', 'zen'];
+                    this.themeKey = themes[Math.floor(Math.random() * themes.length)];
+                    document.getElementById('overlay-screen')?.classList.add('opacity-0', 'pointer-events-none');
+                    this.startNewMaze();
+                });
+
                 safeClick('btn-overlay-primer', () => this.openPrimer());
                 safeClick('btn-open-primer', () => this.openPrimer());
 
@@ -1805,6 +2012,57 @@
                     document.getElementById('modal-codex')?.classList.remove('opacity-0', 'pointer-events-none');
                     document.querySelector('.btn-codex-tab')?.click();
                 });
+
+                // Binaural & Solfeggio Audio Lab
+                const openBinaural = () => {
+                    document.getElementById('modal-binaural')?.classList.remove('opacity-0', 'pointer-events-none');
+                };
+                safeClick('btn-open-binaural', openBinaural);
+                safeClick('btn-open-binaural-hub', openBinaural);
+                safeClick('btn-close-binaural', () => {
+                    this.binaural.stop();
+                    document.getElementById('modal-binaural')?.classList.add('opacity-0', 'pointer-events-none');
+                });
+                safeClick('btn-toggle-binaural-synth', (e) => {
+                    const active = this.binaural.toggleSynth();
+                    if (e.currentTarget) e.currentTarget.innerText = active ? '⏸ PAUSE BINAURAL STEREO TONE' : '▶ START BINAURAL STEREO TONE';
+                });
+                document.querySelectorAll('.btn-play-solfeggio').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const freq = parseInt(e.currentTarget.getAttribute('data-solfeggio'));
+                        if (freq) {
+                            this.binaural.setCarrier(freq);
+                            if (!this.binaural.isPlaying) {
+                                this.binaural.start();
+                                const toggleBtn = document.getElementById('btn-toggle-binaural-synth');
+                                if (toggleBtn) toggleBtn.innerText = '⏸ PAUSE BINAURAL STEREO TONE';
+                            }
+                            const slider = document.getElementById('slider-binaural-carrier');
+                            if (slider) slider.value = freq;
+                            const label = document.getElementById('binaural-carrier-label');
+                            if (label) label.innerText = `${freq} Hz`;
+                            this.synth.playTone(freq, 0.4, 'sine', 0.2);
+                        }
+                    });
+                });
+                document.querySelectorAll('.btn-binaural-band').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.btn-binaural-band').forEach(b => {
+                            b.className = 'btn-binaural-band p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-left text-xs font-bold font-orbitron';
+                        });
+                        const target = e.currentTarget;
+                        target.className = 'btn-binaural-band p-2 rounded-xl border bg-purple-500/20 border-purple-400 text-purple-200 text-left text-xs font-bold font-orbitron';
+                        this.binaural.setBand(target.getAttribute('data-binaural'));
+                    });
+                });
+                const carrierSlider = document.getElementById('slider-binaural-carrier');
+                if (carrierSlider) {
+                    carrierSlider.addEventListener('input', (e) => {
+                        const hz = parseInt(e.target.value);
+                        document.getElementById('binaural-carrier-label').innerText = `${hz} Hz`;
+                        this.binaural.setCarrier(hz);
+                    });
+                }
 
                 safeClick('btn-close-codex', () => {
                     document.getElementById('modal-codex')?.classList.add('opacity-0', 'pointer-events-none');
@@ -2200,6 +2458,8 @@
                 const overlay = document.getElementById('overlay-screen');
                 document.getElementById('overlay-badge').innerText = 'HARMONIC REALM ALIGNED!';
                 document.getElementById('overlay-title').innerText = 'REALM HARMONIZED!';
+                const winSub = document.getElementById('overlay-subtitle');
+                if (winSub) winSub.innerText = '★ SACRED GEOMETRY HARMONIZED ★';
                 document.getElementById('overlay-desc').innerText = `Monromi successfully restored cosmic order in ${this.timer} seconds!`;
                 document.getElementById('endgame-synthesis-card').classList.remove('hidden');
 
@@ -2289,5 +2549,143 @@
             window.gameInstance = new MazeGame();
         });
     </script>
+
+<div id="modal-binaural" class="fixed inset-0 bg-slate-950/94 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="glass-panel-light max-w-2xl w-full rounded-3xl p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-purple-400/40 shadow-2xl relative space-y-6">
+            <button id="btn-close-binaural" class="absolute top-6 right-6 p-2 rounded-full bg-slate-900 hover:bg-slate-800 text-purple-400 hover:text-white transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="flex items-center gap-3 border-b border-slate-700/80 pb-4 pr-10">
+                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-400/50 flex items-center justify-center font-black text-2xl text-purple-300">
+                    🎧
+                </div>
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-amber-300 to-purple-400">
+                        MONROMI'S BINAURAL & SOLFEGGIO AUDIO LAB
+                    </h2>
+                    <p class="text-xs text-purple-200">Put on stereo headphones! Test real-time brainwave entanglement & acoustic healing frequencies.</p>
+                </div>
+            </div>
+
+            <!-- Solfeggio & Brainwave State Selector -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Binaural Beat Engine -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-purple-500/40 space-y-4">
+                    <div class="flex items-center justify-between border-b border-purple-500/30 pb-2">
+                        <span class="font-bold text-purple-300 font-orbitron text-xs">1. BINAURAL BRAINWAVE ENTRAINMENT</span>
+                        <span id="binaural-status" class="text-[9px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">Headphones Active</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[11px] font-bold text-slate-300">Select Target Brainwave Band:</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button data-binaural="delta" class="btn-binaural-band p-2 rounded-xl border bg-purple-500/20 border-purple-400 text-purple-200 text-left text-xs font-bold font-orbitron">
+                                🌙 Delta (2.5 Hz)
+                                <div class="text-[9px] font-normal text-slate-300">Deep Sleep & Healing</div>
+                            </button>
+                            <button data-binaural="theta" class="btn-binaural-band p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-left text-xs font-bold font-orbitron">
+                                🧘 Theta (6 Hz)
+                                <div class="text-[9px] font-normal text-slate-400">Meditation & Intuition</div>
+                            </button>
+                            <button data-binaural="alpha" class="btn-binaural-band p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-left text-xs font-bold font-orbitron">
+                                🎨 Alpha (10 Hz)
+                                <div class="text-[9px] font-normal text-slate-400">Relaxed Focus & Flow</div>
+                            </button>
+                            <button data-binaural="gamma" class="btn-binaural-band p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-left text-xs font-bold font-orbitron">
+                                ⚡ Gamma (40 Hz)
+                                <div class="text-[9px] font-normal text-slate-400">Peak Insight & Perception</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-2 border-t border-slate-800">
+                        <div class="flex justify-between text-xs font-mono text-purple-300">
+                            <span>Base Carrier Frequency:</span>
+                            <span id="binaural-carrier-label">432 Hz</span>
+                        </div>
+                        <input id="slider-binaural-carrier" type="range" min="100" max="1000" value="432" class="w-full accent-purple-400 cursor-pointer" data-explain="Carrier Frequency Slider: Adjust the base carrier pitch from 100Hz deep bass to 1000Hz high harmonic resonance.">
+                    </div>
+
+                    <button id="btn-toggle-binaural-synth" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-slate-950 font-black font-orbitron text-xs shadow-md transition-all hover:opacity-90">
+                        ▶ START BINAURAL STEREO TONE
+                    </button>
+                </div>
+
+                <!-- Solfeggio Scale Guide & Clickable Tone Player -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-amber-500/40 space-y-3">
+                    <div class="flex items-center justify-between border-b border-amber-500/30 pb-2">
+                        <span class="font-bold text-amber-300 font-orbitron text-xs">2. SOLFEGGIO FREQUENCY TONE PLAYER</span>
+                        <span class="text-[9px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 font-mono">Click Any Card To Play Tone</span>
+                    </div>
+
+                    <div class="space-y-2 text-xs max-h-72 overflow-y-auto pr-1">
+                        <div data-solfeggio="396" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-400/60 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-amber-300 font-mono">
+                                <span>396 Hz - Ut</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-amber-500/20 text-amber-200 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Liberation & Grounding: Associated with releasing emotional tension and grounding energy fields.</p>
+                        </div>
+
+                        <div data-solfeggio="417" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-400/60 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-pink-300 font-mono">
+                                <span>417 Hz - Re</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-pink-500/20 text-pink-200 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Facilitating Change & Transmutation: Clears stagnant kinetic resonance and patterns.</p>
+                        </div>
+
+                        <div data-solfeggio="432" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-cyan-500/40 hover:border-cyan-400 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-cyan-300 font-mono">
+                                <span>432 Hz - Natural Standard</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-cyan-500/20 text-cyan-200 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Pythagorean Reference Pitch: Aligned with Fibonacci spiral math ($\Phi = 1.618$) and planetary orbital periods.</p>
+                        </div>
+
+                        <div data-solfeggio="528" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-emerald-500/40 hover:border-emerald-400 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-emerald-300 font-mono">
+                                <span>528 Hz - Mi</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-emerald-500/20 text-emerald-200 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Transformation & DNA Resonance: The "Miracle Tone" used in biophysics research for structural resonance.</p>
+                        </div>
+
+                        <div data-solfeggio="639" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-purple-500/40 hover:border-purple-400 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-purple-300 font-mono">
+                                <span>639 Hz - Fa</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-purple-500/20 text-purple-200 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Harmonic Connection: Promotes cellular communication and acoustic coherence in bio-fields.</p>
+                        </div>
+
+                        <div data-solfeggio="741" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-indigo-500/40 hover:border-indigo-400 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-indigo-300 font-mono">
+                                <span>741 Hz - Sol</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-indigo-500/20 text-indigo-200 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Awakening Intuition: Clarifies acoustic wave nodes and electromagnetic signal purity.</p>
+                        </div>
+
+                        <div data-solfeggio="852" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-teal-500/40 hover:border-teal-400 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-teal-300 font-mono">
+                                <span>852 Hz - La</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-teal-500/20 text-teal-200 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Spiritual Order: Re-aligns high-frequency standing waves with fundamental geometry.</p>
+                        </div>
+
+                        <div data-solfeggio="963" class="btn-play-solfeggio p-2.5 rounded-xl bg-slate-950 border border-amber-400/40 hover:border-amber-300 cursor-pointer transition-all space-y-1">
+                            <div class="flex items-center justify-between font-bold text-amber-200 font-mono">
+                                <span>963 Hz - Ti</span>
+                                <span class="text-[10px] px-2 py-0.5 bg-amber-500/20 text-amber-100 rounded">▶ Play Tone</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300 leading-tight">Crown Universal Light: High-harmonic state returning systems to pristine monad symmetry.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
