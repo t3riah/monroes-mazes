@@ -162,6 +162,13 @@
 </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-amber-500 selection:text-black">
+    <!-- Tooltip popup (was missing: TooltipManager returned early, so all 22 data-explain taps did nothing) -->
+    <!-- NOTE: z-index/width are inline styles, not Tailwind classes: the inlined
+         Tailwind build has no rules for z-[60], w-[280px] or max-w-[calc(100vw-20px)],
+         and without a real z-index the header buttons paint over the tooltip. -->
+    <div id="tooltip-popup" style="z-index:60;width:280px;max-width:calc(100vw - 20px)" class="fixed p-3 rounded-xl bg-slate-900 border border-amber-400/60 shadow-2xl opacity-0 pointer-events-none scale-95 transition-all duration-200">
+        <div id="tooltip-body" class="text-xs text-slate-200 leading-relaxed"></div>
+    </div>
 
     <!-- Top Navigation / HUD Bar -->
     <header class="w-full glass-panel sticky top-0 z-30 px-3 py-2.5 shadow-2xl">
@@ -234,6 +241,8 @@
                         <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">🎴 Dynamic Card</span>
                     </div>
                     <span id="lore-text" class="font-medium text-slate-200 block mt-0.5">Monromi uncovered the Golden Ratio Phi (1.618)!</span>
+                    <span id="lore-quiz-q" class="font-medium text-purple-200 block mt-1 hidden"></span>
+                    <span id="lore-quiz-feedback" class="font-bold block mt-1 hidden"></span>
                 </div>
             </div>
             <div id="lore-quiz-actions" class="flex items-center gap-2 w-full sm:w-auto justify-end">
@@ -583,6 +592,23 @@
                     </button>
                 </div>
 
+                <!-- Primer Mini-Game: Sacred Geometry Pattern Builder -->
+                <!-- Card 1: Sacred Geometry -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-amber-400/40 space-y-3 relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-amber-300 font-orbitron text-sm">🔯 1. Sacred Geometry</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 font-mono">Flower of Life</span>
+                        </div>
+                        <p class="text-slate-300 text-[11px] leading-relaxed">
+                            <b class="text-amber-200">What it is &amp; What you learn:</b> Two equal circles overlap to make the Vesica Piscis, the seed of the Flower of Life. Click Align Radii and watch one circle become the matrix of creation.
+                        </p>
+                    </div>
+                    <button data-primer-game="geometry" class="btn-launch-primer-game w-full py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/60 text-amber-300 font-orbitron font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+                        <span>🎮 Play Mini-Game: Sacred Geometry Pattern Builder</span>
+                    </button>
+                </div>
+
                 <!-- Primer Mini-Game: Quantum Double-Slit Lab -->
                 <!-- Card 2: Quantum Physics -->
                 <div class="p-4 bg-slate-900/90 rounded-2xl border border-purple-400/40 space-y-3 relative overflow-hidden flex flex-col justify-between">
@@ -597,6 +623,23 @@
                     </div>
                     <button data-primer-game="quantum" class="btn-launch-primer-game w-full py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/60 text-purple-300 font-orbitron font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
                         <span>🎮 Play Mini-Game: Quantum Double-Slit Lab</span>
+                    </button>
+                </div>
+
+                <!-- Primer Mini-Game: 432Hz Harmonic Tuning Matcher -->
+                <!-- Card 3: Harmonic Tuning -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-cyan-500/30 space-y-3 relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-cyan-300 font-orbitron text-sm">🎵 3. 432Hz Harmony</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-200 font-mono">Sound Lab</span>
+                        </div>
+                        <p class="text-slate-300 text-[11px] leading-relaxed">
+                            <b class="text-cyan-200">What it is &amp; What you learn:</b> 432Hz tuning is built on natural integer proportions. Slide the frequency until your wave lines up with the 432Hz target and hear the beating disappear.
+                        </p>
+                    </div>
+                    <button data-primer-game="audio" class="btn-launch-primer-game w-full py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/30 text-cyan-300 font-orbitron font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+                        <span>🎮 Play Mini-Game: 432Hz Harmonic Tuning Matcher</span>
                     </button>
                 </div>
 
@@ -675,6 +718,8 @@
         </div>
     </div>
 
+    </div>
+
     <!-- Primer Interactive Mini-Game Lab Modal -->
     <div id="modal-primer-game" class="fixed inset-0 bg-slate-950/94 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
         <div class="glass-panel-light max-w-xl w-full rounded-3xl p-5 sm:p-6 border border-amber-400/40 shadow-2xl relative space-y-4">
@@ -684,7 +729,7 @@
             <div class="flex items-center gap-3">
                 <div id="primer-game-avatar" class="w-12 h-12 flex-shrink-0"></div>
                 <div>
-                    <h3 id="primer-game-title" class="font-black font-orbitron text-amber-300 text-sm sm:text-base">SACRED GEOMETRY LAB</h3>
+                    <h3 id="primer-game-title" class="font-black font-orbitron text-amber-300 text-sm sm:text-base pr-10">SACRED GEOMETRY LAB</h3>
                     <p id="primer-game-subtitle" class="text-xs text-slate-300 font-medium">Interactive Concept Demonstrator</p>
                 </div>
             </div>
@@ -1975,8 +2020,32 @@
                     if (this.activeCardLore) {
                         this.addCardToDeck(this.activeCardLore);
                         document.getElementById('lore-banner')?.classList.add('hidden');
+                        document.getElementById('lore-quiz-q')?.classList.add('hidden');
+                        document.getElementById('lore-quiz-feedback')?.classList.add('hidden');
+                        document.getElementById('btn-quiz-answer-a')?.classList.add('hidden');
+                        document.getElementById('btn-quiz-answer-b')?.classList.add('hidden');
                     }
                 });
+
+                // Quiz answers (A/B in the lore banner; previously never wired)
+                const answerQuiz = (picked) => {
+                    const lore = this.activeCardLore;
+                    if (!lore || !lore.quiz) return;
+                    const fb = document.getElementById('lore-quiz-feedback');
+                    const btnA = document.getElementById('btn-quiz-answer-a');
+                    const btnB = document.getElementById('btn-quiz-answer-b');
+                    if (picked === lore.quiz.correct) {
+                        this.synth.playSFX('win');
+                        if (fb) { fb.innerText = '✓ Correct! Nice one.'; fb.className = 'font-bold block mt-1 text-emerald-300'; }
+                        if (btnA) btnA.disabled = true;
+                        if (btnB) btnB.disabled = true;
+                    } else {
+                        this.synth.playSFX('bump');
+                        if (fb) { fb.innerText = '✗ Not quite, try the other one.'; fb.className = 'font-bold block mt-1 text-red-400'; }
+                    }
+                };
+                safeClick('btn-quiz-answer-a', () => answerQuiz('a'));
+                safeClick('btn-quiz-answer-b', () => answerQuiz('b'));
 
                 // Sound Toggle
                 safeClick('btn-audio-toggle', () => {
@@ -2277,6 +2346,17 @@
                             this.activeCardLore = s.lore;
                             document.getElementById('lore-text').innerText = s.lore.lore;
                             document.getElementById('lore-banner').classList.remove('hidden');
+                            // Show this card's quiz (was dead: buttons never populated or shown)
+                            if (s.lore.quiz) {
+                                const quizQ = document.getElementById('lore-quiz-q');
+                                const quizFb = document.getElementById('lore-quiz-feedback');
+                                const quizA = document.getElementById('btn-quiz-answer-a');
+                                const quizB = document.getElementById('btn-quiz-answer-b');
+                                if (quizQ) { quizQ.innerText = 'Quiz: ' + s.lore.quiz.q; quizQ.classList.remove('hidden'); }
+                                if (quizFb) { quizFb.innerText = ''; quizFb.classList.add('hidden'); }
+                                if (quizA) { quizA.innerText = 'A: ' + s.lore.quiz.a; quizA.classList.remove('hidden'); quizA.disabled = false; }
+                                if (quizB) { quizB.innerText = 'B: ' + s.lore.quiz.b; quizB.classList.remove('hidden'); quizB.disabled = false; }
+                            }
                         }
                     });
 
