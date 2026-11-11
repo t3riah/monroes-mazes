@@ -378,7 +378,20 @@
                                 <span>Acoustic Frequency:</span>
                                 <span id="cymatic-freq-val">432 Hz (Mode 3, 3)</span>
                             </div>
-                            <input id="slider-cymatics-freq" type="range" min="1" max="6" value="3" class="w-full accent-cyan-400 cursor-pointer">
+                            <input id="slider-cymatics-freq" type="range" min="128" max="864" step="1" value="432" class="w-full accent-cyan-400 cursor-pointer">
+                            <div class="flex flex-wrap gap-1.5">
+                                <button data-cym-preset="128" class="btn-cym-preset px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400">128 Hz</button>
+                                <button data-cym-preset="432" class="btn-cym-preset px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/20 border border-emerald-400 text-emerald-200">432 Hz</button>
+                                <button data-cym-preset="528" class="btn-cym-preset px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400">528 Hz</button>
+                                <button data-cym-preset="864" class="btn-cym-preset px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400">864 Hz</button>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span class="text-[10px] font-bold text-emerald-300">Symmetry:</span>
+                                <button data-cym-sym="2" class="btn-cym-sym px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400">2x</button>
+                                <button data-cym-sym="3" class="btn-cym-sym px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/20 border border-emerald-400 text-emerald-200">3x</button>
+                                <button data-cym-sym="4" class="btn-cym-sym px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400">4x</button>
+                                <button id="btn-cymatics-tone" class="ml-auto px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400">🔊 Soundscape: OFF</button>
+                            </div>
                         </div>
                     </div>
                     <div class="flex flex-col items-center justify-center bg-slate-950 p-4 rounded-2xl border border-emerald-500/30">
@@ -465,7 +478,6 @@
     </div>
 
         </div>
-    </div>
 
     <!-- Codex Deck Modal (restored: the Deck button had no modal to open) -->
     <div id="modal-deck" class="fixed inset-0 bg-slate-950/94 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
@@ -643,6 +655,58 @@
                     </button>
                 </div>
 
+
+                <!-- Primer Mini-Game: Entropy & Time Thermal Reverser -->
+                <!-- Card 4: Entropy & Time -->
+                <div class="p-4 rounded-2xl border space-y-3 relative overflow-hidden flex flex-col justify-between" style="background:rgba(15,23,42,0.9);border-color:rgba(236,72,153,0.4)">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-pink-200 font-orbitron text-sm">🔥 4. Entropy &amp; Time</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-pink-500/20 text-pink-200 font-mono">Delta S</span>
+                        </div>
+                        <p class="text-slate-300 text-[11px] leading-relaxed">
+                            <b class="text-pink-200">What it is &amp; What you learn:</b> Entropy (ΔS) says energy spreads and order decays. Chaos cells appear on their own. Tap one to cool it back to order before disorder takes over.
+                        </p>
+                    </div>
+                    <button data-primer-game="entropy" class="btn-launch-primer-game w-full py-2 rounded-xl border font-orbitron font-bold text-xs flex items-center justify-center gap-1.5 transition-all" style="background:rgba(236,72,153,0.15);border-color:rgba(236,72,153,0.6);color:#fbcfe8">
+                        <span>🎮 Play Mini-Game: Thermal Entropy Reverser</span>
+                    </button>
+                </div>
+
+                <!-- Primer Mini-Game: General Relativity Gravity Well Lens -->
+                <!-- Card 5: General Relativity -->
+                <div class="p-4 rounded-2xl border space-y-3 relative overflow-hidden flex flex-col justify-between" style="background:rgba(15,23,42,0.9);border-color:rgba(99,102,241,0.4)">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-indigo-200 font-orbitron text-sm">🕳️ 5. General Relativity</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-200 font-mono">Geodesics</span>
+                        </div>
+                        <p class="text-slate-300 text-[11px] leading-relaxed">
+                            <b class="text-indigo-200">What it is &amp; What you learn:</b> Heavy mass bends the fabric of space, and light follows the curve. Slide the mass and bend a photon into the target orbit.
+                        </p>
+                    </div>
+                    <button data-primer-game="gravity" class="btn-launch-primer-game w-full py-2 rounded-xl border font-orbitron font-bold text-xs flex items-center justify-center gap-1.5 transition-all" style="background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.6);color:#c7d2fe">
+                        <span>🎮 Play Mini-Game: Gravity Well Lens</span>
+                    </button>
+                </div>
+
+                <!-- Primer Mini-Game: Fractal Symmetries Infinite Zoomer -->
+                <!-- Card 6: Fractal Symmetries -->
+                <div class="p-4 rounded-2xl border space-y-3 relative overflow-hidden flex flex-col justify-between" style="background:rgba(15,23,42,0.9);border-color:rgba(20,184,166,0.4)">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-teal-200 font-orbitron text-sm">🌀 6. Fractal Symmetries</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-teal-500/20 text-teal-200 font-mono">Mandelbrot</span>
+                        </div>
+                        <p class="text-slate-300 text-[11px] leading-relaxed">
+                            <b class="text-teal-200">What it is &amp; What you learn:</b> One simple rule (z² + c) makes infinitely repeating patterns. Click the canvas to zoom deeper and find the pattern inside the pattern.
+                        </p>
+                    </div>
+                    <button data-primer-game="fractal" class="btn-launch-primer-game w-full py-2 rounded-xl border font-orbitron font-bold text-xs flex items-center justify-center gap-1.5 transition-all" style="background:rgba(20,184,166,0.15);border-color:rgba(20,184,166,0.6);color:#99f6e4">
+                        <span>🎮 Play Mini-Game: Infinite Fractal Zoomer</span>
+                    </button>
+                </div>
+
             <!-- Mode Selection -->
             <div class="space-y-3">
                 <div class="flex items-center justify-between">
@@ -730,7 +794,7 @@
                 <div id="primer-game-avatar" class="w-12 h-12 flex-shrink-0"></div>
                 <div>
                     <h3 id="primer-game-title" class="font-black font-orbitron text-amber-300 text-sm sm:text-base pr-10">SACRED GEOMETRY LAB</h3>
-                    <p id="primer-game-subtitle" class="text-xs text-slate-300 font-medium">Interactive Concept Demonstrator</p>
+                    <p id="primer-game-subtitle" class="text-xs text-slate-300 font-medium pr-10">Interactive Concept Demonstrator</p>
                 </div>
             </div>
             <div class="flex flex-col items-center justify-center bg-slate-950 p-3 rounded-2xl border border-amber-500/30">
@@ -1245,6 +1309,10 @@
         class InteractiveLabsEngine {
             constructor() {
                 this.cymaticsMode = 3;
+                this.cymaticsSym = 3;
+                this.cymaticsHz = 432;
+                this.cymToneCtx = null;
+                this.cymToneOsc = null;
                 this.observerOn = false;
                 this.currentGeo = 'vesica';
                 this.angle = 0;
@@ -1259,10 +1327,18 @@
                 const slider = document.getElementById('slider-cymatics-freq');
                 if (slider) {
                     slider.addEventListener('input', (e) => {
-                        this.cymaticsMode = parseInt(e.target.value);
-                        document.getElementById('cymatic-freq-val').innerText = `${this.cymaticsMode * 144} Hz (Mode ${this.cymaticsMode}, ${this.cymaticsMode})`;
+                        this.setCymaticsHz(parseInt(e.target.value));
                     });
                 }
+
+                document.querySelectorAll('.btn-cym-preset').forEach(b => {
+                    b.addEventListener('click', () => this.setCymaticsHz(parseInt(b.getAttribute('data-cym-preset'))));
+                });
+                document.querySelectorAll('.btn-cym-sym').forEach(b => {
+                    b.addEventListener('click', () => this.setCymaticsSym(parseInt(b.getAttribute('data-cym-sym'))));
+                });
+                const btnTone = document.getElementById('btn-cymatics-tone');
+                if (btnTone) btnTone.addEventListener('click', () => this.toggleCymaticsTone(btnTone));
 
                 const btnObs = document.getElementById('btn-toggle-observer');
                 if (btnObs) {
@@ -1296,6 +1372,60 @@
                 });
             }
 
+
+            setCymaticsHz(hz) {
+                this.cymaticsHz = hz;
+                this.cymaticsMode = Math.min(6, Math.max(1, Math.round(hz / 144)));
+                document.getElementById('cymatic-freq-val').innerText = `${hz} Hz (Mode ${this.cymaticsMode}, ${this.cymaticsSym})`;
+                const slider = document.getElementById('slider-cymatics-freq');
+                if (slider && parseInt(slider.value) !== hz) slider.value = hz;
+                document.querySelectorAll('.btn-cym-preset').forEach(b => {
+                    const on = parseInt(b.getAttribute('data-cym-preset')) === hz;
+                    b.className = 'btn-cym-preset px-2 py-1 rounded-lg text-[10px] font-bold ' + (on ? 'bg-emerald-500/20 border border-emerald-400 text-emerald-200' : 'bg-slate-900 border border-slate-800 text-slate-400');
+                });
+                if (this.cymToneOsc) {
+                    try { this.cymToneOsc.frequency.setValueAtTime(hz, this.cymToneCtx.currentTime); } catch (e) {}
+                    const btn = document.getElementById('btn-cymatics-tone');
+                    if (btn) btn.innerText = `🔊 Soundscape: ON (${hz} Hz)`;
+                }
+            }
+
+            setCymaticsSym(s) {
+                this.cymaticsSym = s;
+                document.getElementById('cymatic-freq-val').innerText = `${this.cymaticsHz} Hz (Mode ${this.cymaticsMode}, ${this.cymaticsSym})`;
+                document.querySelectorAll('.btn-cym-sym').forEach(b => {
+                    const on = parseInt(b.getAttribute('data-cym-sym')) === s;
+                    b.className = 'btn-cym-sym px-2 py-1 rounded-lg text-[10px] font-bold ' + (on ? 'bg-emerald-500/20 border border-emerald-400 text-emerald-200' : 'bg-slate-900 border border-slate-800 text-slate-400');
+                });
+            }
+
+            toggleCymaticsTone(btn) {
+                try {
+                    if (this.cymToneOsc) {
+                        this.cymToneOsc.stop();
+                        this.cymToneOsc = null;
+                        btn.innerText = '🔊 Soundscape: OFF';
+                        btn.className = 'ml-auto px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400';
+                        return;
+                    }
+                    if (!this.cymToneCtx) {
+                        const AC = window.AudioContext || window.webkitAudioContext;
+                        this.cymToneCtx = new AC();
+                    }
+                    if (this.cymToneCtx.state === 'suspended') this.cymToneCtx.resume();
+                    const osc = this.cymToneCtx.createOscillator();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(this.cymaticsHz, this.cymToneCtx.currentTime);
+                    const gain = this.cymToneCtx.createGain();
+                    gain.gain.setValueAtTime(0.05, this.cymToneCtx.currentTime);
+                    osc.connect(gain); gain.connect(this.cymToneCtx.destination);
+                    osc.start();
+                    this.cymToneOsc = osc;
+                    btn.innerText = `🔊 Soundscape: ON (${this.cymaticsHz} Hz)`;
+                    btn.className = 'ml-auto px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/20 border border-emerald-400 text-emerald-200';
+                } catch (e) { console.warn('Cymatics tone error:', e); }
+            }
+
             renderLoop() {
                 this.angle += 0.02;
                 this.drawCymatics();
@@ -1316,11 +1446,12 @@
 
                 ctx.fillStyle = '#00FA9A';
                 const n = this.cymaticsMode;
+                const s = this.cymaticsSym || 3;
                 for (let i = 0; i < 600; i++) {
                     const x = (Math.sin(i * 99 + this.angle) * 0.5 + 0.5) * w;
                     const y = (Math.cos(i * 33 + this.angle) * 0.5 + 0.5) * h;
-                    const val = Math.cos(n * Math.PI * (x / w)) * Math.cos(n * Math.PI * (y / h)) - 
-                                Math.cos(n * Math.PI * (x / w)) * Math.cos(n * Math.PI * (y / h));
+                    const val = Math.cos(n * Math.PI * (x / w)) * Math.cos(s * Math.PI * (y / h)) -
+                                Math.cos(s * Math.PI * (x / w)) * Math.cos(n * Math.PI * (y / h));
                     if (Math.abs(val) < 0.25) {
                         ctx.fillRect(x, y, 2, 2);
                     }
@@ -1655,6 +1786,7 @@
 
                 const stopGameLoop = () => {
                     if (gameLoopId) cancelAnimationFrame(gameLoopId);
+                    canvas.onclick = null;
                 };
 
                 const openPrimerGame = (type) => {
@@ -1663,6 +1795,7 @@
                     document.getElementById('primer-game-avatar').innerHTML = MonromiAvatar.render('excited');
                     modalGame.classList.remove('opacity-0', 'pointer-events-none');
                     buttons.innerHTML = '';
+                    canvas.onclick = null;
 
                     if (type === 'geometry') {
                         title.innerText = '1. SACRED GEOMETRY PATTERN BUILDER';
@@ -1867,6 +2000,221 @@
                             gameLoopId = requestAnimationFrame(runAudio);
                         };
                         runAudio();
+                    } else if (type === 'entropy') {
+                        title.innerText = '4. THERMAL ENTROPY REVERSER';
+                        subtitle.innerText = 'Entropy spreads disorder — tap chaos cells to restore order';
+                        desc.innerText = 'Entropy (ΔS) says energy spreads and order decays. Chaos cells appear on their own — tap one to cool it back to order. Restore 12 to win!';
+                        state = { cells: [], restored: 0, won: false, lastFlip: Date.now() };
+                        for (let i = 0; i < 25; i++) state.cells.push(0);
+                        const eSize = 38, eGap = 4;
+                        const eOx = (canvas.width - (5 * eSize + 4 * eGap)) / 2, eOy = 26;
+                        const cellAt = (mx, my) => {
+                            const c = Math.floor((mx - eOx) / (eSize + eGap));
+                            const r = Math.floor((my - eOy) / (eSize + eGap));
+                            if (c < 0 || c > 4 || r < 0 || r > 4) return -1;
+                            if ((mx - eOx) % (eSize + eGap) > eSize || (my - eOy) % (eSize + eGap) > eSize) return -1;
+                            return r * 5 + c;
+                        };
+                        canvas.onclick = (e) => {
+                            const rect = canvas.getBoundingClientRect();
+                            const mx = (e.clientX - rect.left) * canvas.width / rect.width;
+                            const my = (e.clientY - rect.top) * canvas.height / rect.height;
+                            const idx = cellAt(mx, my);
+                            if (idx >= 0 && state.cells[idx] === 1 && !state.won) {
+                                state.cells[idx] = 0;
+                                state.restored++;
+                                this.synth.playSFX('star');
+                                if (state.restored >= 12) {
+                                    state.won = true;
+                                    state.cells.fill(0);
+                                    this.synth.playSFX('win');
+                                    desc.innerHTML = '<span class="text-emerald-300 font-bold">✨ Thermal Equilibrium Restored!</span><br/>You fought entropy and won: 12 cells cooled back to order. In the real universe, order always costs energy — and that is why stars shine.';
+                                } else {
+                                    desc.innerText = 'Restored ' + state.restored + ' / 12 — keep cooling the chaos cells!';
+                                }
+                            }
+                        };
+                        const runEntropy = () => {
+                            const now = Date.now();
+                            if (!state.won && now - state.lastFlip > 500) {
+                                state.lastFlip = now;
+                                const ordered = [];
+                                state.cells.forEach((v, i) => { if (v === 0) ordered.push(i); });
+                                if (ordered.length) state.cells[ordered[Math.floor(Math.random() * ordered.length)]] = 1;
+                            }
+                            ctx.fillStyle = '#05050D';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            const orderedCount = state.cells.filter(v => v === 0).length;
+                            ctx.fillStyle = '#134e4a';
+                            ctx.fillRect(eOx, 6, 5 * eSize + 4 * eGap, 8);
+                            ctx.fillStyle = '#34D399';
+                            ctx.fillRect(eOx, 6, (5 * eSize + 4 * eGap) * orderedCount / 25, 8);
+                            for (let r = 0; r < 5; r++) {
+                                for (let c = 0; c < 5; c++) {
+                                    const x = eOx + c * (eSize + eGap), y = eOy + r * (eSize + eGap);
+                                    if (state.cells[r * 5 + c] === 0) {
+                                        ctx.fillStyle = '#064e3b';
+                                        ctx.fillRect(x, y, eSize, eSize);
+                                        ctx.fillStyle = '#34D399';
+                                        ctx.fillRect(x + 8, y + 8, eSize - 16, eSize - 16);
+                                    } else {
+                                        ctx.fillStyle = '#7f1d1d';
+                                        ctx.fillRect(x, y, eSize, eSize);
+                                        ctx.fillStyle = '#F87171';
+                                        ctx.beginPath();
+                                        ctx.moveTo(x + eSize / 2, y + 6);
+                                        ctx.lineTo(x + eSize - 8, y + eSize - 6);
+                                        ctx.lineTo(x + 8, y + eSize - 6);
+                                        ctx.closePath();
+                                        ctx.fill();
+                                    }
+                                }
+                            }
+                            gameLoopId = requestAnimationFrame(runEntropy);
+                        };
+                        runEntropy();
+                    } else if (type === 'gravity') {
+                        title.innerText = '5. GRAVITY WELL LENS';
+                        subtitle.innerText = 'Mass bends space — bend a photon into the target orbit';
+                        desc.innerText = 'General relativity: heavy mass bends the fabric of space, and light follows the curve. Slide the mass, then emit a photon and bend it into the green target ring!';
+                        state = { mass: 50, photon: null, trail: [], done: false };
+                        const gStar = { x: 200, y: 85 };
+                        const gTarget = { x: 332, y: 55, r: 22 };
+                        const massSlider = document.createElement('input');
+                        massSlider.type = 'range';
+                        massSlider.min = '10';
+                        massSlider.max = '100';
+                        massSlider.value = '50';
+                        massSlider.className = 'w-40 accent-cyan-400 cursor-pointer';
+                        const massLabel = document.createElement('span');
+                        massLabel.className = 'text-xs font-mono font-bold text-indigo-200';
+                        massLabel.innerText = 'Mass 50';
+                        massSlider.oninput = (e) => { state.mass = parseInt(e.target.value); massLabel.innerText = 'Mass ' + state.mass; };
+                        const btnEmit = document.createElement('button');
+                        btnEmit.className = 'px-3 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-md';
+                        btnEmit.innerText = '💫 Emit Photon';
+                        btnEmit.onclick = () => {
+                            if (state.photon || state.done) return;
+                            state.photon = { x: 12, y: 205, vx: 2.4, vy: 0 };
+                            state.trail = [];
+                            this.synth.playSFX('move');
+                            desc.innerText = 'Photon away — watch it bend around the well!';
+                        };
+                        buttons.appendChild(massSlider);
+                        buttons.appendChild(massLabel);
+                        buttons.appendChild(btnEmit);
+                        const runGravity = () => {
+                            ctx.fillStyle = '#05050D';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            const starR = 6 + state.mass / 12;
+                            ctx.fillStyle = '#FBBF24';
+                            ctx.beginPath(); ctx.arc(gStar.x, gStar.y, starR, 0, Math.PI * 2); ctx.fill();
+                            ctx.strokeStyle = 'rgba(251,191,36,0.35)';
+                            ctx.beginPath(); ctx.arc(gStar.x, gStar.y, starR + 10, 0, Math.PI * 2); ctx.stroke();
+                            ctx.fillStyle = '#FDE68A'; ctx.font = '10px monospace';
+                            ctx.fillText('Mass ' + state.mass, gStar.x - 18, gStar.y - starR - 14);
+                            ctx.strokeStyle = '#34D399'; ctx.lineWidth = 2;
+                            ctx.beginPath(); ctx.arc(gTarget.x, gTarget.y, gTarget.r, 0, Math.PI * 2); ctx.stroke();
+                            ctx.fillStyle = '#34D399'; ctx.font = '10px monospace';
+                            ctx.fillText('Target Orbit', gTarget.x - 68, gTarget.y + gTarget.r + 12);
+                            if (state.photon) {
+                                const p = state.photon;
+                                const dx = gStar.x - p.x, dy = gStar.y - p.y;
+                                const d2 = dx * dx + dy * dy;
+                                const a = 11 * state.mass / Math.max(d2, 400);
+                                const d = Math.sqrt(d2);
+                                p.vx += a * dx / d;
+                                p.vy += a * dy / d;
+                                p.x += p.vx; p.y += p.vy;
+                                state.trail.push({ x: p.x, y: p.y });
+                                if (state.trail.length > 220) state.trail.shift();
+                                const dT = Math.hypot(p.x - gTarget.x, p.y - gTarget.y);
+                                if (dT < gTarget.r) {
+                                    state.done = true;
+                                    state.photon = null;
+                                    this.synth.playSFX('win');
+                                    desc.innerHTML = '<span class="text-emerald-300 font-bold">✨ Photon Bent Into Focus!</span><br/>At mass ' + state.mass + ', the well curved light exactly into the target orbit. That is gravitational lensing: galaxies do this to light from objects behind them.';
+                                } else if (d < starR + 5) {
+                                    state.photon = null;
+                                    this.synth.playSFX('bump');
+                                    desc.innerText = 'Swallowed by the well — try less mass, then emit again.';
+                                } else if (p.x > canvas.width + 10 || p.y < -10 || p.y > canvas.height + 10) {
+                                    state.photon = null;
+                                    this.synth.playSFX('bump');
+                                    desc.innerText = p.y < gTarget.y ? 'Bent too far — try less mass, then emit again.' : 'Not enough bend — try more mass, then emit again.';
+                                }
+                            }
+                            ctx.strokeStyle = 'rgba(167,139,250,0.7)';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            state.trail.forEach((pt, i) => { if (i === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y); });
+                            ctx.stroke();
+                            if (state.photon) {
+                                ctx.fillStyle = '#C084FC';
+                                ctx.beginPath(); ctx.arc(state.photon.x, state.photon.y, 4, 0, Math.PI * 2); ctx.fill();
+                            }
+                            gameLoopId = requestAnimationFrame(runGravity);
+                        };
+                        runGravity();
+                    } else if (type === 'fractal') {
+                        title.innerText = '6. INFINITE FRACTAL ZOOMER';
+                        subtitle.innerText = 'Simple equations, infinite patterns — click to zoom deeper';
+                        desc.innerText = 'The Mandelbrot set comes from one simple rule: z = z² + c, repeated. Click the canvas to zoom into that point. Reach depth 6 to find infinity inside!';
+                        state = { cx: -0.5, cy: 0, scale: 2.6, depth: 0, won: false };
+                        const renderFractal = () => {
+                            const img = ctx.createImageData(canvas.width, canvas.height);
+                            const maxIter = 64;
+                            let interior = 0;
+                            for (let py = 0; py < canvas.height; py++) {
+                                for (let px = 0; px < canvas.width; px++) {
+                                    const re = state.cx + (px - canvas.width / 2) * (state.scale / canvas.width);
+                                    const im = state.cy + (py - canvas.height / 2) * (state.scale / canvas.width);
+                                    let zr = 0, zi = 0, it = 0;
+                                    while (zr * zr + zi * zi <= 4 && it < maxIter) { const t = zr * zr - zi * zi + re; zi = 2 * zr * zi + im; zr = t; it++; }
+                                    const idx = (py * canvas.width + px) * 4;
+                                    if (it === maxIter) { interior++; img.data[idx] = 5; img.data[idx + 1] = 5; img.data[idx + 2] = 13; }
+                                    else { const tt = it / maxIter; img.data[idx] = Math.floor(251 * tt); img.data[idx + 1] = Math.floor(191 * tt * tt); img.data[idx + 2] = Math.floor(36 + 200 * tt); }
+                                    img.data[idx + 3] = 255;
+                                }
+                            }
+                            ctx.putImageData(img, 0, 0);
+                            ctx.fillStyle = '#FDE68A'; ctx.font = 'bold 11px monospace';
+                            ctx.fillText('Depth ' + state.depth + ' / 6 — click to zoom in', 8, 16);
+                            if (interior / (canvas.width * canvas.height) > 0.85) {
+                                ctx.fillStyle = '#FBBF24'; ctx.font = 'bold 11px monospace';
+                                ctx.fillText('Deep inside the set — click near the glowing edge!', 8, canvas.height - 8);
+                            }
+                        };
+                        renderFractal();
+                        canvas.onclick = (e) => {
+                            if (state.won) return;
+                            const rect = canvas.getBoundingClientRect();
+                            const mx = (e.clientX - rect.left) * canvas.width / rect.width;
+                            const my = (e.clientY - rect.top) * canvas.height / rect.height;
+                            state.cx = state.cx + (mx - canvas.width / 2) * (state.scale / canvas.width);
+                            state.cy = state.cy + (my - canvas.height / 2) * (state.scale / canvas.width);
+                            state.scale /= 2.5;
+                            state.depth++;
+                            this.synth.playSFX('move');
+                            renderFractal();
+                            if (state.depth >= 6) {
+                                state.won = true;
+                                this.synth.playSFX('win');
+                                desc.innerHTML = '<span class="text-emerald-300 font-bold">✨ Infinite Recursion Reached!</span><br/>Six zooms in and the pattern never ends: the same spirals repeat at every scale. That is self-similarity — one equation, endless worlds.';
+                            } else {
+                                desc.innerText = 'Depth ' + state.depth + ' / 6 — the pattern repeats at every scale. Keep zooming!';
+                            }
+                        };
+                        const btnReset = document.createElement('button');
+                        btnReset.className = 'px-3 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-md';
+                        btnReset.innerText = '↺ Reset View';
+                        btnReset.onclick = () => {
+                            state.cx = -0.5; state.cy = 0; state.scale = 2.6; state.depth = 0; state.won = false;
+                            this.synth.playSFX('key');
+                            renderFractal();
+                            desc.innerText = 'The Mandelbrot set comes from one simple rule: z = z² + c, repeated. Click the canvas to zoom into that point. Reach depth 6 to find infinity inside!';
+                        };
+                        buttons.appendChild(btnReset);
                     }
                 };
 
